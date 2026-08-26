@@ -59,7 +59,7 @@ Full architecture, layer responsibilities, and testing strategy → [`docs/archi
 - **Orders** (`orders_recrutement`): 3,661 rows, July 2025 – Dec 2026. One row per order.
 - **Sales** (`sales_recrutement`): 28,361 rows, July 2025 – Dec 2026. One row per order × product.
 
-**Data source truth check**: the challenge document mentions 2022–2023 data, but the actual Excel files contain 2025–2026. I went with the files, since the pipeline should reflect what's actually in the source system rather than what the brief describes.
+**Data source truth check**: the challenge document mentions 2022–2023 data, but the actual Excel files contain 2025–2026 — with rows extending to December 2026, which is odd given we're only in August 2026. For this exercise I'm treating the files as-is and ignoring the date mismatch. Alternatively, the years could be shifted during ingestion (2025 → 2022, 2026 → 2023) to match the brief, but that correction would need to happen upstream in the ETL.
 
 Orders and Sales have different grains. If you join them directly, order-level metrics like `net_sales` get duplicated. I handle this through pre-aggregation in the intermediate layer.
 
