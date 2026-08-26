@@ -58,6 +58,7 @@ Full architecture, layer responsibilities, and testing strategy → [`docs/archi
 
 - **Orders** (`orders_recrutement`): 3,661 rows, July 2025 – Dec 2026. One row per order.
 - **Sales** (`sales_recrutement`): 28,361 rows, July 2025 – Dec 2026. One row per order × product.
+- **Currency**: `net_sales` is assumed to be in **CHF** (Swiss Francs). The source files don't specify a currency, and Astrafy is a Swiss company, so CHF is the natural default.
 
 ## Data Source Truth Check
 
