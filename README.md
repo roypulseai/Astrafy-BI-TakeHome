@@ -59,9 +59,13 @@ Full architecture, layer responsibilities, and testing strategy → [`docs/archi
 - **Orders** (`orders_recrutement`): 3,661 rows, July 2025 – Dec 2026. One row per order.
 - **Sales** (`sales_recrutement`): 28,361 rows, July 2025 – Dec 2026. One row per order × product.
 
-**Data source truth check**: the challenge document mentions 2022–2023 data, but the actual Excel files contain 2025–2026 — with rows extending to December 2026, which is odd given we're only in August 2026. For this exercise I'm treating the files as-is and ignoring the date mismatch. Alternatively, the years could be shifted during ingestion (2025 → 2022, 2026 → 2023) to match the brief, but that correction would need to happen upstream in the ETL.
+## Data Source Truth Check
 
-Orders and Sales have different grains. If you join them directly, order-level metrics like `net_sales` get duplicated. I handle this through pre-aggregation in the intermediate layer.
+The brief says the data covers 2022–2023. The actual files run **2025-07-09 → 2026-12-31** instead — both years shifted by exactly +3, which looks like the fixture got regenerated with a uniform date offset rather than being genuinely different data.
+
+I kept the dates as-is rather than shifting them back. The exercises explicitly ask about "the year 2026," so remapping the dates would mean redefining what "2026" refers to with no ground truth to check the mapping against — more room for confusion than it's worth. Source data wins over stale docs. If Astrafy did intend 2022–2023, it's a one-line `DATE_SUB(..., INTERVAL 3 YEAR)` in staging — I kept staging isolated so a change like that wouldn't ripple downstream.
+
+**Grain note:** Orders and Sales don't share a grain — joining them directly duplicates order-level metrics like `net_sales`. Handled via pre-aggregation in the intermediate layer.
 
 ---
 
