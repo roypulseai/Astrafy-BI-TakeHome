@@ -20,9 +20,9 @@ KPI dictionary, charts, top-product tables, and revenue breakdowns for the Looke
 
 | KPI | Looker Studio Formula | Validated Value |
 | --- | --- | --- |
-| Net Sales | `SUM(net_sales)` | $269,044.05 |
+| Net Sales | `SUM(net_sales)` | CHF269,044.05 |
 | Orders | `SUM(order_count)` | 3,661 |
-| Average Order Value | `SUM(net_sales) / SUM(order_count)` | $73.49 |
+| Average Order Value | `SUM(net_sales) / SUM(order_count)` | CHF73.49 |
 | Products Sold | `SUM(qty_product)` | 47,728 |
 | Avg Products per Order | `SUM(qty_product) / SUM(order_count)` | 13.04 |
 | Unique Customers | `COUNT_DISTINCT(customer_ref)` | 1,716 |
@@ -78,31 +78,31 @@ volume driver  pricing/basket
 
 | Product ID | Revenue | Units | Orders | Customers |
 | --- | --- | --- | --- | --- |
-| 6197 | $3,993.06 | 316 | 66 | 20 |
-| 26651 | $3,652.45 | 399 | 70 | 27 |
-| 80643 | $3,629.10 | 187 | 36 | 14 |
-| 43944 | $3,280.86 | 272 | 68 | 28 |
-| 45368 | $2,344.82 | 68 | 8 | 3 |
-| 76567 | $2,271.31 | 78 | 23 | 4 |
-| 43945 | $2,101.88 | 174 | 40 | 16 |
-| 43943 | $1,791.99 | 145 | 39 | 26 |
-| 26652 | $1,400.84 | 154 | 32 | 14 |
-| 45943 | $1,343.67 | 59 | 18 | 7 |
+| 6197 | CHF3,993.06 | 316 | 66 | 20 |
+| 26651 | CHF3,652.45 | 399 | 70 | 27 |
+| 80643 | CHF3,629.10 | 187 | 36 | 14 |
+| 43944 | CHF3,280.86 | 272 | 68 | 28 |
+| 45368 | CHF2,344.82 | 68 | 8 | 3 |
+| 76567 | CHF2,271.31 | 78 | 23 | 4 |
+| 43945 | CHF2,101.88 | 174 | 40 | 16 |
+| 43943 | CHF1,791.99 | 145 | 39 | 26 |
+| 26652 | CHF1,400.84 | 154 | 32 | 14 |
+| 45943 | CHF1,343.67 | 59 | 18 | 7 |
 
 **By Units Sold:**
 
 | Product ID | Units | Revenue | Orders | Customers |
 | --- | --- | --- | --- | --- |
-| 26651 | 399 | $3,652.45 | 70 | 27 |
-| 6197 | 316 | $3,993.06 | 66 | 20 |
-| 43944 | 272 | $3,280.86 | 68 | 28 |
-| 85159 | 231 | $552.64 | 61 | 37 |
-| 70403 | 200 | $161.83 | 19 | 5 |
-| 80643 | 187 | $3,629.10 | 36 | 14 |
-| 79612 | 186 | $280.74 | 44 | 17 |
-| 71058 | 178 | $174.89 | 39 | 7 |
-| 43945 | 174 | $2,101.88 | 40 | 16 |
-| 79107 | 158 | $515.06 | 50 | 34 |
+| 26651 | 399 | CHF3,652.45 | 70 | 27 |
+| 6197 | 316 | CHF3,993.06 | 66 | 20 |
+| 43944 | 272 | CHF3,280.86 | 68 | 28 |
+| 85159 | 231 | CHF552.64 | 61 | 37 |
+| 70403 | 200 | CHF161.83 | 19 | 5 |
+| 80643 | 187 | CHF3,629.10 | 36 | 14 |
+| 79612 | 186 | CHF280.74 | 44 | 17 |
+| 71058 | 178 | CHF174.89 | 39 | 7 |
+| 43945 | 174 | CHF2,101.88 | 40 | 16 |
+| 79107 | 158 | CHF515.06 | 50 | 34 |
 
 > Products 45368 and 76567 crack the top 5 by revenue despite low unit counts (68 and 78) — they're high-value items.
 
@@ -125,29 +125,29 @@ volume driver  pricing/basket
 
 | Month | Revenue | % of Annual | Orders | % of Orders |
 | --- | --- | --- | --- | --- |
-| Jan | $16,520 | 6.1% | 232 | 6.3% |
-| Feb | $13,550 | 5.0% | 176 | 4.8% |
-| Mar | $13,877 | 5.2% | 203 | 5.5% |
-| Apr | $14,474 | 5.4% | 188 | 5.1% |
-| May | $13,376 | 5.0% | 172 | 4.7% |
-| Jun | $14,059 | 5.2% | 169 | 4.6% |
-| Jul | $25,107 | 9.3% | 326 | 8.9% |
-| Aug | $24,379 | 9.1% | 321 | 8.8% |
-| Sep | $28,490 | 10.6% | 383 | 10.5% |
-| Oct | $29,240 | 10.9% | 415 | 11.3% |
-| Nov | $42,603 | 15.8% | 605 | 16.5% |
-| Dec | $33,369 | 12.4% | 471 | 12.9% |
+| Jan | CHF16,520 | 6.1% | 232 | 6.3% |
+| Feb | CHF13,550 | 5.0% | 176 | 4.8% |
+| Mar | CHF13,877 | 5.2% | 203 | 5.5% |
+| Apr | CHF14,474 | 5.4% | 188 | 5.1% |
+| May | CHF13,376 | 5.0% | 172 | 4.7% |
+| Jun | CHF14,059 | 5.2% | 169 | 4.6% |
+| Jul | CHF25,107 | 9.3% | 326 | 8.9% |
+| Aug | CHF24,379 | 9.1% | 321 | 8.8% |
+| Sep | CHF28,490 | 10.6% | 383 | 10.5% |
+| Oct | CHF29,240 | 10.9% | 415 | 11.3% |
+| Nov | CHF42,603 | 15.8% | 605 | 16.5% |
+| Dec | CHF33,369 | 12.4% | 471 | 12.9% |
 
 **Quarterly summary:**
 
 | Quarter | Revenue | % of Annual | Orders | % of Orders |
 | --- | --- | --- | --- | --- |
-| Q1 (Jan–Mar) | $43,947 | 16.3% | 611 | 16.7% |
-| Q2 (Apr–Jun) | $41,909 | 15.6% | 529 | 14.4% |
-| Q3 (Jul–Sep) | $77,976 | 29.0% | 1,030 | 28.1% |
-| Q4 (Oct–Dec) | $105,212 | 39.1% | 1,491 | 40.7% |
+| Q1 (Jan–Mar) | CHF43,947 | 16.3% | 611 | 16.7% |
+| Q2 (Apr–Jun) | CHF41,909 | 15.6% | 529 | 14.4% |
+| Q3 (Jul–Sep) | CHF77,976 | 29.0% | 1,030 | 28.1% |
+| Q4 (Oct–Dec) | CHF105,212 | 39.1% | 1,491 | 40.7% |
 
 **Headline takeaways** (see also Key Data Insights in the main README):
 
-- **Revenue concentration**: Q4 (Oct–Dec) accounts for 39.1% of annual revenue ($105,212 of $269,044), driven by November (605 orders, 15.8% of annual volume).
+- **Revenue concentration**: Q4 (Oct–Dec) accounts for 39.1% of annual revenue (CHF105,212 of CHF269,044), driven by November (605 orders, 15.8% of annual volume).
 - **VIP leverage**: 21.7% of orders from VIPs, but they drive 29.0% of annual revenue.
