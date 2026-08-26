@@ -1,0 +1,33 @@
+name: 'astrafy_bi'
+version: '1.0.0'
+config-version: 2
+require-dbt-version: [">=1.6.0"]
+
+profile: 'astrafy_bi'
+
+model-paths: ["models"]
+test-paths: ["tests"]
+analysis-paths: ["analyses"]
+macro-paths: ["macros"]
+snapshot-paths: ["snapshots"]
+
+clean-targets:
+  - "target"
+  - "dbt_packages"
+  - "dbt_modules"
+
+models:
+  astrafy_bi:
+    staging:
+      +materialized: view
+    intermediate:
+      +materialized: table
+    marts:
+      +materialized: table
+
+vars:
+  new_customer_max_prior_orders: 0
+  returning_min_prior_orders: 1
+  returning_max_prior_orders: 3
+  vip_min_prior_orders: 4
+  segmentation_lookback_months: 12

@@ -1,0 +1,51 @@
+version: 2
+
+sources:
+  - name: raw
+    database: "{{ target.database }}"
+    schema: recruitment_raw
+    config:
+      freshness:
+        warn_after: { count: 24, period: hour }
+        error_after: { count: 48, period: hour }
+
+    tables:
+
+      - name: orders_recrutement
+        description: "Raw order-level data. Grain: one row per order."
+        config:
+          loaded_at_field: _loaded_at
+
+        columns:
+
+          - name: orders_id
+            tests:
+              - not_null
+              - unique
+
+          - name: customers_id
+            tests:
+              - not_null
+
+          - name: date_date
+            tests:
+              - not_null
+
+      - name: sales_recrutement
+        description: "Raw order-product data. Grain: one row per order and product."
+        config:
+          loaded_at_field: _loaded_at
+
+        columns:
+
+          - name: order_id
+            tests:
+              - not_null
+
+          - name: products_id
+            tests:
+              - not_null
+
+          - name: qty
+            tests:
+              - not_null

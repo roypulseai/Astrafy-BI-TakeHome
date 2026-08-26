@@ -1,0 +1,358 @@
+version: 2
+
+models:
+
+  - name: mart_orders
+    description: >
+      Canonical order-level analytical mart. Grain: exactly one row per order.
+      Contains order attributes, calendar fields, product summary, rolling 12-month
+      customer history, order_segmentation (based on prior orders at time of each
+      order), customer_profile (customer's current segment based on their latest
+      order), and a constant order_count for aggregation.
+      Clustered by customer_id + order_segmentation.
+
+    columns:
+
+      - name: order_id
+        description: "Unique order identifier."
+        data_tests:
+          - not_null
+          - unique
+
+      - name: customer_id
+        description: "Foreign key to customer."
+        data_tests:
+          - not_null
+
+      - name: order_date
+        description: "Date the order was placed."
+        data_tests:
+          - not_null
+
+      - name: order_year
+        description: "Calendar year of the order."
+
+      - name: order_month
+        description: "Calendar month number (1-12) of the order."
+
+      - name: order_month_start
+        description: "First day of the calendar month of the order."
+
+      - name: net_sales
+        description: "Net sales amount for the order."
+        data_tests:
+          - not_null
+
+      - name: qty_product
+        description: "Total quantity of products purchased in the order (sum of qty across all product lines)."
+
+      - name: product_line_count
+        description: "Number of distinct product lines in the order."
+
+      - name: distinct_product_count
+        description: "Number of distinct product SKUs in the order."
+
+      - name: prior_orders_last_12_months
+        description: "Count of orders by the same customer during the preceding 12 months."
+
+      - name: has_complete_12_month_history
+        description: >
+          True if the order date is on or after 2026-07-09, meaning the full
+          12-month lookback window falls within the dataset (which starts
+          2025-07-09). For orders before 2026-07-09 the lookback extends
+          before the dataset start, so the prior-order count may be
+          understated. "New" for these early orders means no prior order was
+          found in the available data — it does NOT prove the customer had
+          never ordered before the dataset start date.
+
+      - name: order_segmentation
+        description: >
+          Order-time customer segment based on prior orders in the preceding 12 months.
+          New = 0 prior orders, Returning = 1-3, VIP = 4+. Changes over time as the
+          customer places more orders.
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values:
+                  - New
+                  - Returning
+                  - VIP
+
+      - name: customer_profile
+        description: >
+          Customer's current segment based on their latest order in the dataset.
+          Unlike order_segmentation which changes per order, customer_profile is
+          stable across all orders for a given customer. Useful for analysing
+          revenue by current customer type rather than historical segment.
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values:
+                  - New
+                  - Returning
+                  - VIP
+
+      - name: order_count
+        description: >
+          Constant 1 at order grain. Use SUM(order_count) to calculate order count
+          without exposing order_id.
+
+  - name: mart_orders_looker_studio
+    description: >
+      Thin BI presentation view derived from mart_orders for Looker Studio.
+      Grain: exactly one row per order. Technical order/customer identifiers
+      are excluded; customer_ref is a pseudonymous reporting key for
+      distinct-customer aggregation. order_count enables SUM-based order totals.
+    columns:
+
+      - name: order_date
+        description: "Date the order was placed."
+        data_tests:
+          - not_null
+
+      - name: order_year
+        description: "Calendar year of the order."
+
+      - name: order_month
+        description: "Calendar month number (1-12) of the order."
+
+      - name: order_month_start
+        description: "First day of the calendar month."
+
+      - name: net_sales
+        description: "Net sales amount for the order."
+        data_tests:
+          - not_null
+
+      - name: qty_product
+        description: "Total product quantity purchased in the order."
+
+      - name: product_line_count
+        description: "Number of distinct product lines in the order."
+
+      - name: distinct_product_count
+        description: "Number of distinct product SKUs in the order."
+
+      - name: order_segmentation
+        description: >
+          Order-time customer segment: New = 0 prior orders, Returning = 1-3,
+          VIP = 4+, based on the preceding 12 months.
+
+      - name: customer_profile
+        description: >
+          Current customer segment based on the customer's latest order.
+
+      - name: has_complete_12_month_history
+        description: >
+          True if the 12-month lookback window falls entirely within the
+          dataset. Orders before 2026-07-09 may understate prior history.
+
+      - name: order_count
+        description: "Constant 1 at order grain; sum to calculate order count."
+
+      - name: customer_ref
+        description: >
+          Pseudonymous deterministic customer key used for distinct-customer
+          aggregation in Looker Studio. Not an anonymization guarantee.
+
+  - name: exercise_4_orders_with_qty
+    description: >
+      Exercise 4 deliverable: 2025/2026 order-level table with qty_product.
+      Grain: one row per order. Thin view over mart_orders filtered to 2025-2026.
+
+  - name: exercise_6_orders_segmented
+    description: >
+      Exercise 6 deliverable: 2026 order-level table with segmentation.
+      Grain: one row per order. Thin view over mart_orders filtered to 2026.
+    columns:
+      - name: order_segmentation
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values:
+                  - New
+                  - Returning
+                  - VIP
+
+  - name: mart_order_lines
+    description: >
+      Product/order-line level mart. Grain: exactly one row per order × product.
+      Enriched with order-level attributes (segmentation, profile). Orphan sales
+      (order_id 5361303, no matching order) are excluded for consistency with
+      mart_orders. Product-level aggregations are in mart_product_summary.
+    columns:
+
+      - name: order_id
+        description: "Foreign key to order."
+        data_tests:
+          - not_null
+
+      - name: customer_id
+        description: "Foreign key to customer."
+        data_tests:
+          - not_null
+
+      - name: product_id
+        description: "Foreign key to product."
+        data_tests:
+          - not_null
+
+      - name: order_date
+        description: "Date the order was placed."
+        data_tests:
+          - not_null
+
+      - name: order_year
+        description: "Year extracted from order_date."
+
+      - name: order_month
+        description: "Month extracted from order_date (1-12)."
+
+      - name: order_month_start
+        description: "First day of the month for order_date."
+
+      - name: quantity
+        description: "Quantity of this product in the order line."
+        data_tests:
+          - not_null
+
+      - name: net_sales
+        description: "Net sales for this product line."
+        data_tests:
+          - not_null
+
+      - name: order_segmentation
+        description: "Order-time customer segment (New/Returning/VIP). Orphan sales (no matching order) are excluded from this mart."
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: [New, Returning, VIP]
+
+      - name: customer_profile
+        description: "Customer's current segment based on latest order. Orphan sales (no matching order) are excluded from this mart."
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: [New, Returning, VIP]
+
+      - name: has_complete_12_month_history
+        description: "Whether the full 12-month lookback falls within the dataset."
+
+      - name: revenue_per_unit
+        description: "Net sales divided by quantity for this order line."
+
+  - name: mart_order_lines_looker_studio
+    description: >
+      Thin BI view over mart_order_lines for Looker Studio product-level
+      analysis. Grain: one row per order × product. Excludes technical keys
+      (order_id, customer_id). Product-level aggregations are in
+      mart_product_summary.
+    columns:
+
+      - name: product_id
+        description: "Unique product identifier."
+        data_tests:
+          - not_null
+
+      - name: order_date
+        description: "Date the order was placed."
+        data_tests:
+          - not_null
+
+      - name: order_year
+        description: "Year extracted from order_date."
+
+      - name: order_month
+        description: "Month extracted from order_date (1-12)."
+
+      - name: order_month_start
+        description: "First day of the month for order_date."
+
+      - name: units_sold
+        description: "Quantity of this product purchased in the order line."
+        data_tests:
+          - not_null
+
+      - name: net_sales
+        description: "Net sales for this product line."
+        data_tests:
+          - not_null
+
+      - name: order_segmentation
+        description: "Order-time customer segment (New/Returning/VIP)."
+        data_tests:
+          - not_null
+
+      - name: customer_profile
+        description: "Customer's current segment based on latest order."
+        data_tests:
+          - not_null
+
+      - name: has_complete_12_month_history
+        description: "Whether the full 12-month lookback falls within the dataset."
+
+      - name: revenue_per_unit
+        description: "Net sales divided by units sold for this order line."
+
+      - name: order_line_count
+        description: "Always 1. SUM for total line count."
+
+  - name: mart_product_summary
+    description: >
+      Product-level summary. Grain: one row per product. Pre-aggregated for
+      Looker Studio "Top Products" tables. Contains total revenue, units,
+      order count, customer count, segment breakdown, and monthly averages.
+    columns:
+
+      - name: product_id
+        description: "Unique product identifier."
+        data_tests:
+          - not_null
+          - unique
+
+      - name: total_units_sold
+        description: "Total units of this product sold across all orders."
+
+      - name: total_product_revenue
+        description: "Total revenue for this product across all orders."
+
+      - name: orders_containing_product
+        description: "Distinct orders that include this product."
+
+      - name: customers_buying_product
+        description: "Distinct customers who purchased this product."
+
+      - name: avg_revenue_per_unit
+        description: "Average revenue per unit sold."
+
+      - name: avg_revenue_per_order
+        description: "Average revenue per order containing this product."
+
+      - name: new_customer_revenue
+        description: "Revenue from orders classified as New segment."
+
+      - name: returning_customer_revenue
+        description: "Revenue from orders classified as Returning segment."
+
+      - name: vip_revenue
+        description: "Revenue from orders classified as VIP segment."
+
+      - name: first_order_date
+        description: "Earliest order date for this product."
+
+      - name: last_order_date
+        description: "Latest order date for this product."
+
+      - name: active_months
+        description: "Number of distinct calendar months in which this product was ordered."
+
+      - name: avg_monthly_revenue
+        description: "Total revenue / active months."
+
+      - name: avg_monthly_orders
+        description: "Total orders / active months."

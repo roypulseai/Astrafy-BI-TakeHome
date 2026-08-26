@@ -1,0 +1,48 @@
+name: dbt CI
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+jobs:
+  lint-and-compile:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install dbt-bigquery ruff sqlfluff
+
+      - name: Create minimal dbt profile for CI
+        run: |
+          mkdir -p ~/.dbt
+          cat > ~/.dbt/profiles.yml << 'EOF'
+          astrafy_bi:
+            target: dev
+            outputs:
+              dev:
+                type: bigquery
+                method: service-account
+                project: ci-placeholder
+                dataset: ci_placeholder
+                threads: 1
+                location: EU
+          EOF
+
+      - name: dbt parse
+        run: dbt parse --no-partial-parse
+
+      - name: dbt compile
+        run: dbt compile
+
+      - name: Python lint (ruff)
+        run: ruff check ingestion/
+
+      - name: SQL lint (sqlfluff)
+        run: sqlfluff lint models/ --dialect bigquery --ignore templating

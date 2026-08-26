@@ -1,0 +1,62 @@
+version: 2
+
+models:
+
+  - name: stg_orders
+    description: "Cleaned order-level staging model. Grain: one row per order. Sources from raw.orders_recrutement."
+
+    columns:
+
+      - name: order_id
+        description: "Unique order identifier."
+        data_tests:
+          - not_null
+          - unique
+
+      - name: customer_id
+        description: "Foreign key to customer."
+        data_tests:
+          - not_null
+
+      - name: order_date
+        description: "Date the order was placed."
+        data_tests:
+          - not_null
+
+      - name: net_sales
+        description: "Net sales amount for the order."
+
+  - name: stg_sales
+    description: "Cleaned sales-line staging model. Grain: one row per order and product. Sources from raw.sales_recrutement."
+
+    columns:
+
+      - name: order_id
+        description: "Foreign key to order."
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_orders')
+                field: order_id
+              config:
+                severity: warn  # known issue: order_id 5361303 has no matching order header
+
+      - name: customer_id
+        description: "Foreign key to customer."
+
+      - name: product_id
+        description: "Foreign key to product."
+        data_tests:
+          - not_null
+
+      - name: order_date
+        description: "Date of the sales line."
+
+      - name: line_net_sales
+        description: "Net sales for this product line."
+
+      - name: qty
+        description: "Quantity of product purchased."
+        data_tests:
+          - not_null

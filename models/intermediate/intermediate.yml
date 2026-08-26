@@ -1,0 +1,62 @@
+version: 2
+
+models:
+
+  - name: int_order_product_summary
+    description: >
+      Order-level product aggregation. Grain: one row per order.
+      Calculates total quantity, product line count, and distinct product count.
+      Excludes orphan sales (order_id 5361303) with no matching order header.
+
+    columns:
+
+      - name: order_id
+        description: "Unique order identifier."
+        data_tests:
+          - not_null
+          - unique
+
+      - name: qty_product
+        description: "Total quantity of products purchased in the order (sum of qty across all product lines)."
+        data_tests:
+          - not_null
+
+      - name: product_line_count
+        description: "Number of product lines in the order (count of rows in stg_sales for this order)."
+
+      - name: distinct_product_count
+        description: "Number of distinct product SKUs in the order."
+
+  - name: int_order_customer_history
+    description: >
+      For each order, calculates the number of orders placed by the same customer
+      during the preceding 12 months. Used for New / Returning / VIP segmentation.
+
+    columns:
+
+      - name: order_id
+        description: "Unique order identifier."
+        data_tests:
+          - not_null
+          - unique
+
+      - name: customer_id
+        description: "Foreign key to customer."
+        data_tests:
+          - not_null
+
+      - name: order_date
+        description: "Date the order was placed."
+        data_tests:
+          - not_null
+
+      - name: net_sales
+        description: "Net sales amount for the order."
+
+      - name: prior_orders_last_12_months
+        description: "Count of orders by the same customer during the 12 months preceding this order."
+        data_tests:
+          - not_null
+
+      - name: has_complete_12_month_history
+        description: "Boolean. True if the full 12-month lookback window falls within the dataset (order placed on or after 2026-07-09)."
