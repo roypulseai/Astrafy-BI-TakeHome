@@ -133,19 +133,21 @@ view: orders {
     synonyms: [customer type, buyer segment, cohort]
   }
 
-  # ── LookML-Derived Segmentation ────────────────────────────────────────────
-  # This dimension recomputes the segmentation rule in LookML, proving that
-  # the business rule is encoded in both the warehouse (dbt) and the semantic
-  # layer (LookML). A reconciliation test can verify they always agree.
+  # ── Hidden Validation Only ─────────────────────────────────────────────────
+  # This dimension recomputes the segmentation rule in LookML so that
+  # segmentation_reconciliation can validate warehouse vs. semantic-layer
+  # agreement. Both dimensions are hidden — end users and AI see only
+  # order_segmentation / customer_profile.
 
   dimension: lookml_order_segmentation {
+    hidden: yes
     type: string
     label: "LookML-Derived Segment"
     description: >
-      Segment recomputed in LookML from prior_orders_last_12_months using
-      the same thresholds as the dbt macro: New = 0, Returning = 1-3,
-      VIP = 4+. Used to validate that warehouse and semantic-layer
-      segmentation always agree.
+      Hidden validation dimension — recomputes segmentation in LookML from
+      prior_orders_last_12_months using the same thresholds as the dbt macro
+      (New = 0, Returning = 1-3, VIP = 4+). Exposed only for the
+      segmentation_reconciliation test; not for end-user or AI queries.
     sql:
       case
         when ${prior_orders_last_12_months} <= @{NEW_CUSTOMER_MAX_PRIOR_ORDERS} then 'New'
@@ -153,7 +155,6 @@ view: orders {
         when ${prior_orders_last_12_months} >= @{VIP_MIN_PRIOR_ORDERS} then 'VIP'
         else 'Unknown'
       end ;;
-    suggestions: ["New", "Returning", "VIP"]
   }
 
   dimension: segmentation_reconciliation {
