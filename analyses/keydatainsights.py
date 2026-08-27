@@ -24,7 +24,7 @@ GROUP BY 1, 2
 ORDER BY 2
 """
 for row in client.query(q_monthly).result():
-    print(f"  {row.month_name:4s} {row.month_num:2d}: {row.orders:4d} orders, {row.total_qty:7.0f} qty, avg {row.avg_products_per_order:5.2f}, rev ${row.total_revenue:,.2f}")
+    print(f"  {row.month_name:4s} {row.month_num:2d}: {row.orders:4d} orders, {row.total_qty:7.0f} qty, avg {row.avg_products_per_order:5.2f}, rev CHF {row.total_revenue:,.2f}")
 
 # Q4 calculation
 q_q4 = """
@@ -78,7 +78,7 @@ GROUP BY 1
 ORDER BY 2 DESC
 """
 for row in client.query(q_seg).result():
-    print(f"  {row.order_segmentation:10s}: {row.orders:4d} orders, {row.pct:5.1f}%, rev ${row.revenue:,.2f}")
+    print(f"  {row.order_segmentation:10s}: {row.orders:4d} orders, {row.pct:5.1f}%, rev CHF {row.revenue:,.2f}")
 
 # Returning + VIP combined
 q_ret_vip = """
@@ -108,8 +108,8 @@ for row in client.query(q_overall).result():
     print(f"  Total orders: {row.total_orders}")
     print(f"  2025 orders: {row.orders_2025}")
     print(f"  2026 orders: {row.orders_2026}")
-    print(f"  Total revenue: ${row.total_revenue:,.2f}")
-    print(f"  AOV: ${row.aov:,.2f}")
+    print(f"  Total revenue: CHF {row.total_revenue:,.2f}")
+    print(f"  AOV: CHF {row.aov:,.2f}")
     print(f"  Unique customers: {row.unique_customers}")
 
 # 4. Orphan check
@@ -168,9 +168,9 @@ SELECT order_total, sales_total, ABS(order_total - sales_total) AS diff
 FROM order_rev, sales_rev
 """
 for row in client.query(q_rev).result():
-    print(f"  Order total: ${row.order_total:,.2f}")
-    print(f"  Sales total: ${row.sales_total:,.2f}")
-    print(f"  Difference: ${row.diff:,.2f}")
+    print(f"  Order total: CHF {row.order_total:,.2f}")
+    print(f"  Sales total: CHF {row.sales_total:,.2f}")
+    print(f"  Difference: CHF {row.diff:,.2f}")
 
 # 8. Monthly 2026 for exercise answers verification
 print("\n--- Exercise 2 Verification (Monthly 2026) ---")
