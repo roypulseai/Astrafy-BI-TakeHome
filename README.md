@@ -168,7 +168,7 @@ python ingestion/create_forecast_model.py  # must run after dbt build
 | -------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
 | 1. Orders in 2026                           | **2,573**                                                                                                                          |
 | 2. Orders per month (2026)                  | Jan 232; Feb 176; Mar 203; Apr 188; May 172; Jun 169; Jul 193; Aug 167; Sep 212; Oct 223; Nov 389; Dec 249                         |
-| 3. Avg products/order by month              | Jan 12.57; Feb 12.62; Mar 13.07; Apr 15.10; May 14.63; Jun 14.18; Jul 13.75; Aug 14.46; Sep 13.67; Oct 13.03; Nov 10.48; Dec 11.37 |
+| 3. Avg products/order by month (2026)       | Jan 12.57; Feb 12.62; Mar 13.07; Apr 15.10; May 14.63; Jun 14.18; Jul 13.75; Aug 14.46; Sep 13.67; Oct 13.03; Nov 10.48; Dec 11.37 |
 | 4. One-row-per-order 2025–2026              | `mart_orders` with `qty_product` column (3,661 rows)                                                                               |
 | 5. Segmentation (2026)                      | New 1,087; Returning 794; VIP 692                                                                                                  |
 | 6. One-row-per-order 2026 with segmentation | `exercise_6_orders_segmented` view (2,573 rows)                                                                                    |
