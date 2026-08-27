@@ -24,7 +24,7 @@ The source data contains dates but not timestamps. 63 customer/date groups (47 d
 
 **Impact**: A customer's same-day orders are excluded from each other's prior history, which can affect segmentation edge cases. For example, if a customer has two orders on the same day and neither sees the other, both may be classified as "New" when the second should be "Returning".
 
-**Mitigation**: Deterministic tie-breaker (`ORDER BY order_date, order_id`) used for reproducibility. The lookback SQL uses `WHERE history.order_date < current_order.order_date` (strictly before), so same-day orders are correctly excluded from each other's windows. This is the best approximation without timestamps. Quantified in `docs/DATA_QUALITY.md`.
+**Mitigation**: Deterministic tie-breaker (`ORDER BY order_date, order_id`) used for reproducibility. The lookback SQL uses `WHERE history.order_date < current_order.order_date` (strictly before). Same-day orders cannot be deterministically sequenced because timestamps are unavailable. They are therefore excluded from each other's lookback history. Quantified in `docs/DATA_QUALITY.md`.
 
 ## Architecture
 

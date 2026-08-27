@@ -44,7 +44,7 @@
 - Segmentation may misclassify: a customer's second same-day order is treated as if their first same-day order doesn't exist yet
 - Edge case only: affects <4% of all orders
 
-**Mitigation**: The lookback SQL uses `WHERE history.order_date < current_order.order_date` (strictly before), so same-day orders are correctly excluded from each other's windows. This is the best approximation without timestamps.
+**Mitigation**: The lookback SQL uses `WHERE history.order_date < current_order.order_date` (strictly before). Same-day orders cannot be deterministically sequenced because timestamps are unavailable. They are therefore excluded from each other's lookback history.
 
 ### 3. Partitioning Not Applied
 
