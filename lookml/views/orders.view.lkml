@@ -98,9 +98,9 @@ view: orders {
       segmentation always agree.
     sql:
       case
-        when ${prior_orders_last_12_months} <= 0 then 'New'
-        when ${prior_orders_last_12_months} between 1 and 3 then 'Returning'
-        when ${prior_orders_last_12_months} >= 4 then 'VIP'
+        when ${prior_orders_last_12_months} <= @{NEW_CUSTOMER_MAX_PRIOR_ORDERS} then 'New'
+        when ${prior_orders_last_12_months} between @{RETURNING_MIN_PRIOR_ORDERS} and @{RETURNING_MAX_PRIOR_ORDERS} then 'Returning'
+        when ${prior_orders_last_12_months} >= @{VIP_MIN_PRIOR_ORDERS} then 'VIP'
         else 'Unknown'
       end ;;
     suggestions: ["New", "Returning", "VIP"]

@@ -180,7 +180,7 @@ python ingestion/create_forecast_model.py  # must run after dbt build
 ## Key Design Decisions
 
 - **Grain mismatch**: Orders (1 row/order) and Sales (1 row/order × product) are reconciled through pre-aggregation in `int_order_product_summary` before joining, avoiding metric duplication.
-- **Segmentation thresholds are config, not code**: New = 0 prior orders, Returning = 1–3, VIP = 4+, based on a rolling 12-month window. Thresholds live in `dbt_project.yml` vars, so a business redefinition (e.g. VIP = 5+) is a one-line change, not a macro rewrite. Orders before 2026-07-09 have an incomplete lookback window — use `has_complete_12_month_history` for accurate segmentation analysis.
+- **Segmentation thresholds are config, not code**: New = 0 prior orders, Returning = 1–3, VIP = 4+, based on a rolling 12-month window. Thresholds live in `dbt_project.yml` vars **and** in `lookml/manifest.lkml` constants (`NEW_CUSTOMER_MAX_PRIOR_ORDERS`, `RETURNING_MIN/MAX_PRIOR_ORDERS`, `VIP_MIN_PRIOR_ORDERS`) — the two are kept in sync so a business redefinition (e.g. VIP = 5+) is a config change in both places, not a code rewrite. Drift between the two is caught by `assert_segmentation_reconciliation`. Orders before 2026-07-09 have an incomplete lookback window — use `has_complete_12_month_history` for accurate segmentation analysis.
 - **`order_segmentation` vs `customer_profile`**: the former is the segment *at the time of that order*; the latter is the customer's *current* segment. This lets you distinguish "revenue from orders that were VIP at the time" from "revenue from customers who are currently VIP."
 - **LookML vs Looker Studio**: LookML's `hidden: yes` only works inside Looker Explores, not Looker Studio (which connects directly to BigQuery). So the LookML semantic layer is a parallel, self-contained deliverable, and a dedicated dbt view (`mart_orders_looker_studio`) powers the actual dashboard.
 - **BigQuery at scale**: partitioning isn't applied at ~3.6k orders (full scans complete in <3s) but the model is ready to add it on `order_date`; clustering is applied now on `customer_id` and `order_segmentation` for CRM lookups and segment slices.
@@ -222,11 +222,16 @@ No `.lkml` source file needs to be edited to deploy. All environment-specific va
 | `GCP_PROJECT` | `thtask` | Target GCP project |
 | `BQ_DATASET` | `recruitment_analytics` | BigQuery dataset |
 | `CONNECTION_NAME` | `bigquery_connection` | Looker BigQuery connection name |
+| `NEW_CUSTOMER_MAX_PRIOR_ORDERS` | `0` | Segmentation: max prior orders for New |
+| `RETURNING_MIN_PRIOR_ORDERS` | `1` | Segmentation: min prior orders for Returning |
+| `RETURNING_MAX_PRIOR_ORDERS` | `3` | Segmentation: max prior orders for Returning |
+| `VIP_MIN_PRIOR_ORDERS` | `4` | Segmentation: min prior orders for VIP |
 
 **Steps:**
 1. Create the BigQuery connection in Looker (Admin → Connections) with the name you will use for `CONNECTION_NAME`.
 2. Override constants for the target environment — in Looker's UI (Project → Settings → Constants) or by importing an environment-specific manifest that `override`s the values.
 3. Deploy the project. Views resolve `sql_table_name: \`@{GCP_PROJECT}.@{BQ_DATASET}.mart_orders\`` and the model resolves `connection: "@{CONNECTION_NAME}"` from the configured constants.
+4. If you change segmentation thresholds (e.g., VIP = 5+), update **both** `dbt_project.yml` vars and `manifest.lkml` constants together — drift is caught by `assert_segmentation_reconciliation`.
 
 Defaults point at this take-home's `thtask.recruitment_analytics` so the project validates as-is.
 
