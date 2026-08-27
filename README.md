@@ -199,7 +199,7 @@ Looker Studio connects directly to BigQuery. Two dbt views power the dashboard:
 | `mart_orders_looker_studio` | Order-level: KPI tiles, trends, segment tables |
 | `mart_order_lines_looker_studio` | Product-level: "Top Products by Revenue / by Units Sold" tables |
 
-**Live dashboard**: [Looker Studio](https://datastudio.google.com/s/uomZI0GAGhM)
+**Live dashboard**: [Looker Studio](https://datastudio.google.com/s/rz5EvDxeclk)
 **PDF export**: [`Dashboard/Daily_E-Commerce_Performance.pdf`](Dashboard/Daily_E-Commerce_Performance.pdf)
 
 ---
