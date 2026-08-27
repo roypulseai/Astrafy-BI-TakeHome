@@ -2,10 +2,9 @@
 -- Computes rolling 12-month prior order count per customer for segmentation.
 --
 -- Same-day behaviour: the source contains dates but no timestamps.
--- Same-day orders from the same customer cannot be reliably sequenced,
--- so only orders on strictly earlier dates count as prior history.
--- A deterministic tie-breaker (ORDER BY order_date, order_id) is used
--- for reproducibility, but order_id is an arbitrary surrogate key.
+-- Orders from the same customer placed on the same date cannot be reliably
+-- sequenced. Therefore, only orders on strictly earlier dates are counted
+-- as prior history.
 
 {{ config(
     materialized='table',

@@ -1,5 +1,5 @@
 {# 
-  Maps a prior order count expression to a customer segment label.
+  Maps a prior order count expression to an order  segment label.
   Thresholds are configurable via dbt_project.yml vars.
   Business rule: New = 0 prior orders, Returning = 1-3, VIP = 4+.
   The else 'Unknown' fallback is unreachable with current thresholds

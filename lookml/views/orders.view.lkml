@@ -114,8 +114,10 @@ view: orders {
     hidden: yes
     type: yesno
     description: >
-      Whether the full 12-month lookback falls within the dataset.
-      Orders before 2026-07-09 may understate prior history.
+      Whether the full 12-month customer order-history window is available in the
+      supplied dataset. Orders before 2026-07-09 do not have a complete lookback
+      because the dataset begins on 2025-07-09; their order segmentation may
+      therefore be inaccurate.
     sql: ${TABLE}.has_complete_12_month_history ;;
   }
 
@@ -195,7 +197,7 @@ view: orders {
     sql: ${net_sales} ;;
     value_format_name: decimal_2
     drill_fields: [order_detail*]
-    synonyms: [total revenue, gross sales, total sales]
+    synonyms: [total revenue, net sales, total sales]
   }
 
   measure: average_order_value {

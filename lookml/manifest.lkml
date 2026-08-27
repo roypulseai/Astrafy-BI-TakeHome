@@ -1,9 +1,9 @@
 project_name: "astrafy_bi"
 
-# All environment-specific values are constants.
-# Deploy to a new environment by overriding these constants in
-# Looker's Project Settings (or via manifest.lkml import) — no
-# view/model source files need to be edited.
+# Environment-specific configuration.
+# Values can be overridden by an importing LookML project, allowing the same
+# semantic layer to be deployed against a different GCP project, dataset,
+# or Looker connection without modifying view/model source files.
 
 constant: GCP_PROJECT {
   value: "thtask"
@@ -20,12 +20,11 @@ constant: CONNECTION_NAME {
   export: override_optional
 }
 
-# Segmentation thresholds — single source for LookML.
-# Must be kept in sync with dbt_project.yml vars
-# (new_customer_max_prior_orders, returning_min/max, vip_min).
-# Changing these here propagates to lookml_order_segmentation;
-# the reconciliation test (assert_segmentation_reconciliation) will
-# fail if dbt and LookML diverge.
+# 12-month order segmentation thresholds used by the LookML semantic layer.
+# These values mirror the corresponding dbt_project.yml variables.
+# LookML constants and dbt variables are independent configuration sources;
+# assert_segmentation_reconciliation validates that the resulting LookML
+# segmentation remains consistent with the dbt-produced segmentation.
 
 constant: NEW_CUSTOMER_MAX_PRIOR_ORDERS {
   value: "0"

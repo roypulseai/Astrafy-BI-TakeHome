@@ -1,9 +1,9 @@
 view: order_lines {
   sql_table_name: `@{GCP_PROJECT}.@{BQ_DATASET}.mart_order_lines` ;;
 
-  # ── AI-Guiding Parameters ────────────────────────────────────────────────────
-  # Constrain product analysis to valid business choices; hide technical
-  # column names and aggregation logic from the LLM.
+   # Business-facing fields and descriptions are intentionally designed to
+   # provide clear semantic context for Looker users and Conversational
+   # Analytics while keeping implementation-oriented identifiers hidden.
 
   parameter: product_metric_focus {
     type: unquoted
@@ -72,9 +72,9 @@ view: order_lines {
     type: string
     label: "Order Customer Segment"
     description: >
-      Customer segment at the time of each order, based on orders placed
-      during the preceding 12 months (excluding the current order):
-      New = 0 prior orders, Returning = 1-3, VIP = 4+.
+      Segment assigned to the order based on the customer's order history
+      during the preceding 12 months, excluding the current order:
+      New = 0 prior orders, Returning = 1–3 prior orders, VIP = 4+ prior orders.
     sql: ${TABLE}.order_segmentation ;;
     suggestions: ["New", "Returning", "VIP"]
   }
@@ -83,8 +83,9 @@ view: order_lines {
     type: string
     label: "Current Customer Segment"
     description: >
-      Customer's current segment based on their latest order.
-      Stable across all orders for a given customer.
+      Customer profile based on the customer's most recent known order in the
+      dataset. This is a customer-level attribute and is distinct from
+      Order Segment, which is evaluated separately for each order.
     sql: ${TABLE}.customer_profile ;;
     suggestions: ["New", "Returning", "VIP"]
   }

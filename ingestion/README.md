@@ -76,4 +76,4 @@ The Looker Studio view is created by dbt (Step 2), not by this script.
 
 - The scripts use `WRITE_TRUNCATE`, so re-running replaces existing data.
 - Do not commit the XLSX files to a public repository.
-- `mart_orders_looker_studio` is a dbt view — Looker Studio should point at this, not at `mart_orders`.
+- `mart_orders_looker_studio` , `mart_orders_lines_looker_studio` are dbt views — Looker Studio should point at them, not at `mart_orders` and `mart_orders_lines`.

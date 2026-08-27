@@ -15,15 +15,19 @@ explore: orders {
 
   description: >
     Order-grain Explore for monitoring sales, order volume, basket size,
-    customer segmentation and customer behaviour. Grain: one row per order.
+    order segmentation and customer profile. Grain: one row per order.
     Revenue measures are safe to aggregate without fan-out because the Explore
-    is at exactly one-row-per-order grain. Do not mix with order-line-level
-    measures in one query — use the Product Performance Explore for product
-    metrics; join on order_id only when both grains are explicitly required.
+    is at exactly one-row-per-order grain. Order segmentation classifies each
+    order as New, Returning, or VIP based on the customer's order history.
+    Do not mix with order-line-level measures in one query — use the Product
+    Performance Explore for product metrics; join on order_id only when both
+    grains are explicitly required.
 
   # NOTE: has_complete_12_month_history is available as a filter dimension.
-  # Orders before 2026-07-09 have an incomplete 12-month lookback and may
-  # understate historical counts. Filter to "Yes" to exclude those rows.
+  # Orders before 2026-07-09 do not have a complete 12-month lookback because
+  # the supplied dataset begins on 2025-07-09. Their New/Returning/VIP
+  # segmentation may therefore be inaccurate. Filter to "Yes" when analysis
+  # requires a complete historical window.
 }
 
 explore: order_lines {
@@ -33,12 +37,14 @@ explore: order_lines {
   persist_with: default_datagroup
 
   description: >
-    Product/order-line Explore for analysing sales by product, customer,
-    and segment. Grain: one row per order × product. Use this Explore for
-    product-level revenue, units, and customer analysis. Safe to aggregate
-    because each row is a single product line. Do not mix with order-level
-    measures — order metrics belong in the Order Performance Explore;
-    unique_customers is non-additive (do not sum across segments).
+    Product/order-line Explore for analysing sales by product and customer,
+    with order-level segmentation available for slicing product performance.
+    Grain: one row per order × product. Use this Explore for product-level
+    revenue, units, and customer analysis. Each row represents a single
+    order-product combination, so product-level measures are additive at this
+    grain. Do not mix with order-level measures — order metrics belong in the
+    Order Performance Explore; unique_customers is non-additive and should not
+    be summed across segments or other dimensions.
 
   join: orders {
     type: left_outer
