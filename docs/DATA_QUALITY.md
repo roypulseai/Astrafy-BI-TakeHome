@@ -26,7 +26,7 @@
 - Excluded from `mart_order_lines`: 1 row, CHF 47.09 revenue, 1 product unit
 - Excluded from `exercise_4_orders_with_qty`: 1 row, 1 product unit
 - Excluded from `exercise_6_orders_segmented`: 1 row
-- All downstream marts: 1,716 unique customers (would be 1,717 if included)
+- All downstream marts: 1,716 unique customers (unchanged if orphan included — customer 1382673 already has 5 orders in `stg_orders`)
 - Revenue difference: CHF 269,091.14 (raw) - CHF 269,044.05 (mart) = CHF 47.09
 - Units consistent across marts: `mart_orders` and `mart_order_lines` both report 47,728 units
 
