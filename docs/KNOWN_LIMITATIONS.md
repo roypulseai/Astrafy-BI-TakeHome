@@ -6,7 +6,7 @@ Documented limitations, their impact, and mitigations.
 
 ### Challenge metadata vs supplied data date discrepancy
 
-The challenge document describes source data covering **2022–2023**, but the supplied Excel files contain data covering **2025–2026**. The exercises themselves ask for 2025 and 2026 outputs.
+The challenge document describes source data covering **Jan 2022–Dec 2023** (24 months), but the supplied Excel files contain data covering **2025-07-09–2026-12-31** (18 months). The end date is exactly +3 years (Dec 2023 → Dec 2026) but the start is July 2025 rather than Jan 2025, so it is not a uniform shift. The exercises themselves ask for 2025 and 2026 outputs.
 
 **Impact**: None on execution — the supplied files are the source of truth.
 **Mitigation**: Original source files preserved unchanged in the repository.

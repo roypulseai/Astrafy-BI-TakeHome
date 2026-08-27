@@ -62,9 +62,9 @@ Full architecture, layer responsibilities, and testing strategy → [`docs/archi
 
 ## Data Source Truth Check
 
-The brief says the data covers 2022–2023. The actual files run **2025-07-09 → 2026-12-31** instead — both years shifted by exactly +3, which looks like the fixture got regenerated with a uniform date offset rather than being genuinely different data.
+The brief says the data covers Jan 2022–Dec 2023 (24 months). The actual files run **2025-07-09 → 2026-12-31** (18 months) — the end date is exactly +3 years (Dec 2023 → Dec 2026), but the start is July 2025 rather than Jan 2025, so it is not a clean uniform +3-year shift and the first 6 months of the brief's range have no counterpart in the supplied data.
 
-I kept the dates as-is rather than shifting them back. The exercises explicitly ask about "the year 2026," so remapping the dates would mean redefining what "2026" refers to with no ground truth to check the mapping against — more room for confusion than it's worth. Source data wins over stale docs. If Astrafy did intend 2022–2023, it's a one-line `DATE_SUB(..., INTERVAL 3 YEAR)` in staging — I kept staging isolated so a change like that wouldn't ripple downstream.
+I kept the dates as-is and treat the supplied files as the source of truth. The exercises explicitly ask about "the year 2026," so remapping the dates would mean redefining what "2026" refers to with no ground truth to check the mapping against — more room for confusion than it's worth. If Astrafy did intend 2022–2023, it's a one-line `DATE_SUB(..., INTERVAL 3 YEAR)` in staging — I kept staging isolated so a change like that wouldn't ripple downstream.
 
 **Grain note:** Orders and Sales don't share a grain — joining them directly duplicates order-level metrics like `net_sales`. Handled via pre-aggregation in the intermediate layer.
 
