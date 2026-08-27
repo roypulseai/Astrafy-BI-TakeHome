@@ -243,9 +243,17 @@ LookML recomputes the segmentation rule from `prior_orders_last_12_months` (New 
 
 ### Conversational Analytics / GenAI Readiness
 
+Descriptions + synonyms + hidden fields are necessary but not sufficient for reliable NL→SQL. The project adds explicit business semantics so an LLM does not have to infer them:
+
 - **Clear measure names**: `average_order_value` rather than `avg_net_sales_amount`.
 - **Business descriptions**: every dimension and measure has a human-readable description.
 - **Hidden technical artifacts**: `order_id`, `customer_id`, and `prior_orders_last_12_months` are hidden.
+- **Explicit business semantics**:
+  - `net_sales` = order-level net revenue (CHF); in the Orders Explore one row = one order, so `SUM(net_sales)` is safe.
+  - `average_order_value` = `revenue / orders` (`total_net_sales / order_count`), not an average of averages.
+  - `order_segmentation` = segment **at order time** (point-in-time, based on prior 12 months at that order); `customer_profile` = **latest/current** customer state (stable across all orders for a customer). Do not conflate them.
+  - **Grain guardrails**: do not mix order-level and order-line-level measures in one query. Use the Orders Explore for order metrics and the Product Performance Explore (order_lines) for product metrics; join on `order_id` only when the question explicitly requires both grains.
+  - `unique_customers` is non-additive — do not sum distinct counts across segments or time buckets; always recompute distinct.
 
 ### Looker Studio Connection
 
