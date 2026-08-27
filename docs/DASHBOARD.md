@@ -121,35 +121,50 @@ volume driver  pricing/basket
 
 ## Revenue Contribution (all data: Jul 2025 – Dec 2026)
 
-The source data spans 18 months. Monthly rows below aggregate across both years by calendar month (e.g., "Nov" = Nov 2025 + Nov 2026). Percentages are relative to the full 18-month total (CHF 269,044 / 3,661 orders).
+The source data spans 18 months. Annual totals below are for the full period. Charts in Looker Studio filter by calendar year.
 
-**Monthly breakdown (cross-year calendar month sums):**
+**2025 H2 (Jul – Dec):**
 
-| Month | Revenue | % of Total | Orders | % of Orders | Note |
-| --- | --- | --- | --- | --- | --- |
-| Jan | CHF 16,520 | 6.1% | 232 | 6.3% | 2026 only |
-| Feb | CHF 13,550 | 5.0% | 176 | 4.8% | 2026 only |
-| Mar | CHF 13,877 | 5.2% | 203 | 5.5% | 2026 only |
-| Apr | CHF 14,474 | 5.4% | 188 | 5.1% | 2026 only |
-| May | CHF 13,376 | 5.0% | 172 | 4.7% | 2026 only |
-| Jun | CHF 14,059 | 5.2% | 169 | 4.6% | 2026 only |
-| Jul | CHF 25,107 | 9.3% | 326 | 8.9% | 2025 + 2026 |
-| Aug | CHF 24,379 | 9.1% | 321 | 8.8% | 2025 + 2026 |
-| Sep | CHF 28,490 | 10.6% | 383 | 10.5% | 2025 + 2026 |
-| Oct | CHF 29,240 | 10.9% | 415 | 11.3% | 2025 + 2026 |
-| Nov | CHF 42,603 | 15.8% | 605 | 16.5% | 2025 + 2026 |
-| Dec | CHF 33,369 | 12.4% | 471 | 12.9% | 2025 + 2026 |
+| Month | Revenue | % of Total | Orders | % of Orders |
+| --- | --- | --- | --- | --- |
+| Jul | CHF 9,093 | 3.4% | 133 | 3.6% |
+| Aug | CHF 12,105 | 4.5% | 154 | 4.2% |
+| Sep | CHF 12,896 | 4.8% | 171 | 4.7% |
+| Oct | CHF 14,196 | 5.3% | 192 | 5.2% |
+| Nov | CHF 16,521 | 6.1% | 216 | 5.9% |
+| Dec | CHF 16,037 | 6.0% | 222 | 6.1% |
+| **Subtotal** | **CHF 80,848** | **30.1%** | **1,088** | **29.7%** |
+
+**2026 (Jan – Dec):**
+
+| Month | Revenue | % of Total | Orders | % of Orders |
+| --- | --- | --- | --- | --- |
+| Jan | CHF 16,520 | 6.1% | 232 | 6.3% |
+| Feb | CHF 13,550 | 5.0% | 176 | 4.8% |
+| Mar | CHF 13,877 | 5.2% | 203 | 5.5% |
+| Apr | CHF 14,474 | 5.4% | 188 | 5.1% |
+| May | CHF 13,376 | 5.0% | 172 | 4.7% |
+| Jun | CHF 14,059 | 5.2% | 169 | 4.6% |
+| Jul | CHF 16,014 | 6.0% | 193 | 5.3% |
+| Aug | CHF 12,274 | 4.6% | 167 | 4.6% |
+| Sep | CHF 15,593 | 5.8% | 212 | 5.8% |
+| Oct | CHF 15,044 | 5.6% | 223 | 6.1% |
+| Nov | CHF 26,083 | 9.7% | 389 | 10.6% |
+| Dec | CHF 17,332 | 6.4% | 249 | 6.8% |
+| **Subtotal** | **CHF 188,196** | **69.9%** | **2,573** | **70.3%** |
 
 **Quarterly summary:**
 
-| Quarter | Revenue | % of Annual | Orders | % of Orders |
+| Quarter | Revenue | % of Total | Orders | % of Orders |
 | --- | --- | --- | --- | --- |
-| Q1 (Jan–Mar) | CHF43,947 | 16.3% | 611 | 16.7% |
-| Q2 (Apr–Jun) | CHF41,909 | 15.6% | 529 | 14.4% |
-| Q3 (Jul–Sep) | CHF77,976 | 29.0% | 1,030 | 28.1% |
-| Q4 (Oct–Dec) | CHF105,212 | 39.1% | 1,491 | 40.7% |
+| Q1 2026 (Jan–Mar) | CHF 43,947 | 16.3% | 611 | 16.7% |
+| Q2 2026 (Apr–Jun) | CHF 41,909 | 15.6% | 529 | 14.4% |
+| Q3 2025 (Jul–Sep) | CHF 34,095 | 12.7% | 458 | 12.5% |
+| Q3 2026 (Jul–Sep) | CHF 43,881 | 16.3% | 572 | 15.6% |
+| Q4 2025 (Oct–Dec) | CHF 46,753 | 17.4% | 630 | 17.2% |
+| Q4 2026 (Oct–Dec) | CHF 58,459 | 21.7% | 861 | 23.5% |
 
 **Headline takeaways** (see also Key Data Insights in the main README):
 
-- **Revenue concentration**: Q4 (Oct–Dec) accounts for 39.1% of annual revenue (CHF 105,212 of CHF 269,044), with November as the single largest contributing month (605 orders, 16.5% of annual volume).
+- **Revenue concentration**: Q4 2026 (CHF 58,459) is the largest single quarter, accounting for 21.7% of total revenue. Q4 2025 contributed 17.4%, making the two Q4 periods combined responsible for 39.1% of total revenue.
 - **VIP leverage**: 21.7% of orders from VIPs, but they drive 29.0% of annual revenue.
