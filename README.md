@@ -282,6 +282,18 @@ A BigQuery ML `ARIMA_PLUS` model (`sales_forecast`) trained on daily net sales f
 
 **Training details**: 539 non-zero-sales days over a 541-calendar-day range (Jul 2025 – Dec 2026); only 2 days (2026-05-19 and 2026-05-20) have no orders and are zero-filled by the date spine. `auto_arima = true` lets the model select the best ARIMA order.
 
+**Backtesting (holdout, last H days of dataset; Dec 2026):**
+
+Holdout = last 7 / 14 / 30 days of 2026-12-31, trained on data up to `MAX_DATE - H`. December is a high-variance holiday period; results reflect a single split, not full CV.
+
+| Horizon | Test period | n | MAE (CHF) | RMSE (CHF) | MAPE | ME / bias (CHF) | Sum actual (CHF) | Sum forecast (CHF) |
+|---|---|---|---|---|---|---|---|---|
+| 7d | 2026-12-25 – 2026-12-31 | 7 | 233.58 | 288.74 | 161.67% | -224.45 | 2,626.03 | 4,197.16 |
+| 14d | 2026-12-18 – 2026-12-31 | 14 | 345.62 | 382.06 | 180.38% | -306.04 | 5,233.56 | 9,518.16 |
+| 30d | 2026-12-02 – 2026-12-31 | 30 | 431.84 | 517.30 | 166.26% | -375.55 | 16,771.83 | 28,038.47 |
+
+ME negative = systematic over-forecast. High MAPE is driven by small denominators on low-sales days (e.g., 2026-12-27 actual CHF 71.55 vs forecast CHF ~600) and December volatility with only ~18 months of training data and no holiday/promotion covariates. Model is `ARIMA(0,1,1)` weekly seasonality (`AIC 7360.69`). For production, use with caution, add holiday effects, and monitor MAPE > 20% (see `docs/PRODUCTIONIZATION.md`).
+
 **TVFs created** (by `ingestion/create_forecast_model.py`):
 
 - `v_sales_forecast()` — 30-day forecast horizon
