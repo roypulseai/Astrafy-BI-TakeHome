@@ -46,10 +46,7 @@ explore: order_lines {
     Order Performance Explore; unique_customers is non-additive and should not
     be summed across segments or other dimensions.
 
-  join: orders {
-    type: left_outer
-    relationship: many_to_one
-    sql_on: ${order_lines.order_id} = ${orders.order_id} ;;
-    fields: [orders.order_segmentation, orders.customer_profile]
-  }
+  # order_segmentation and customer_profile are exposed directly from the
+  # order_lines view (mart_order_lines already carries these order-level
+  # attributes), so no join to the orders view is required here.
 }

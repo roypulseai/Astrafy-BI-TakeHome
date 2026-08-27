@@ -215,7 +215,7 @@ Looker Studio connects directly to BigQuery. Two dbt views power the dashboard:
 
 ### Deployment — Directly Deployable, Configuration Only
 
-This is a **directly deployable** LookML project — not a template. The Looker project root is `lookml/` and `lookml/manifest.lkml` **is included in the repository** with all constants defined (with working defaults), so the project validates and runs in Looker as-is. No `.lkml` source file needs to be edited to deploy. All environment-specific values live in `lookml/manifest.lkml` as constants (using Looker's `@{...}` constant substitution; `@{GCP_PROJECT}`/`@{BQ_DATASET}` are defined in the manifest, not placeholder text):
+This is a **directly deployable** LookML project — not a template. The Looker project root is the **repository root**, and `lookml/manifest.lkml` is the Looker manifest, with all constants defined (with working defaults), so the project validates and runs in Looker as-is. The model's `include: "/lookml/views/*.view.lkml"` resolves relative to that project root. No `.lkml` source file needs to be edited to deploy. All environment-specific values live in `lookml/manifest.lkml` as constants (using Looker's `@{...}` constant substitution; `@{GCP_PROJECT}`/`@{BQ_DATASET}` are defined in the manifest, not placeholder text):
 
 | Constant | Default | What to configure |
 |---|---|---|
@@ -233,7 +233,7 @@ This is a **directly deployable** LookML project — not a template. The Looker 
 3. Deploy the project. Views resolve `sql_table_name: \`@{GCP_PROJECT}.@{BQ_DATASET}.mart_orders\`` and the model resolves `connection: "@{CONNECTION_NAME}"` from the configured constants.
 4. If you change segmentation thresholds (e.g., VIP = 5+), update **both** `dbt_project.yml` vars and `manifest.lkml` constants together — drift is caught at PR time by `scripts/validate_segmentation_thresholds.py` and at runtime by `assert_segmentation_reconciliation`.
 
-With defaults, the project is **structurally ready to be deployed and used within Looker** as the assignment requires — `lookml/` can be pushed as a Looker project and will validate/run without any file edits. Overrides are only needed when deploying to a different GCP project/dataset/connection.
+With defaults, the project is **structurally ready to be deployed and used within Looker** as the assignment requires — the repository root can be pushed as a Looker project and will validate/run without any file edits. Overrides are only needed when deploying to a different GCP project/dataset/connection.
 
 ### Key Design Decisions
 
@@ -253,7 +253,7 @@ Descriptions + synonyms + hidden fields are necessary but not sufficient for rel
 - **Clear measure names**: `average_order_value` rather than `avg_net_sales_amount`.
 - **Business descriptions**: every dimension and measure has a human-readable description.
 - **Hidden technical artifacts**: `order_id`, `customer_id`, and `prior_orders_last_12_months` are hidden.
-- **Strategic LookML parameters** (the assignment's “strategically use parameters to guide AI”): `orders.date_granularity` (day/week/month/quarter), `orders.metric_focus` (revenue/orders/aov/basket), `orders.segment_focus` (All/New/Returning/VIP) and `order_lines.product_metric_focus` / `product_segment_focus`. Each exposes only valid business choices via `allowed_value` labels, provides context in its `description`, and hides raw `DATE_TRUNC` / measure-selection / column-filter logic. `orders.order_date_at_selected_grain` is the parameter-driven dimension AI should use for time-series instead of building its own truncation.
+- **LookML parameters** (the assignment's “strategically use parameters to guide AI”): `orders.date_granularity` (day/week/month/quarter) is wired into the `orders.order_date_at_selected_grain` dimension, which AI should use for time-series instead of building its own truncation. `orders.metric_focus`, `orders.segment_focus`, and `order_lines.product_metric_focus` / `product_segment_focus` are defined with `allowed_value` labels and descriptive context to expose valid business choices, but are not currently wired into any `sql:` filter or measure selection — they are guide rails for the AI, not enforcement. Deploying real enforcement would require referencing them (e.g. `{% parameter ... %}`) in `sql:`, which is left as follow-up work.
 - **Explicit business semantics**:
   - `net_sales` = order-level net revenue (CHF); in the Orders Explore one row = one order, so `SUM(net_sales)` is safe.
   - `average_order_value` = `revenue / orders` (`total_net_sales / order_count`), not an average of averages.

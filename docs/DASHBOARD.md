@@ -167,4 +167,4 @@ The source data spans 18 months. Annual totals below are for the full period. Ch
 **Headline takeaways** (see also Key Data Insights in the main README):
 
 - **Revenue concentration**: Q4 2026 (CHF 58,459) is the largest single quarter, accounting for 21.7% of total revenue. Q4 2025 contributed 17.4%, making the two Q4 periods combined responsible for 39.1% of total revenue.
-- **VIP leverage**: 21.7% of orders from VIPs, but they drive 29.0% of annual revenue.
+- **VIP leverage**: 26.9% of 2026 orders came from VIPs, driving 36.0% of 2026 revenue.
