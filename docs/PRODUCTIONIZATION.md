@@ -87,7 +87,7 @@ Option C: Cloud Composer
 | dbt test failures | Any ERROR | Alert Slack, block downstream |
 | Source freshness | > 24 hours | Alert data engineering |
 | Forecast accuracy | MAPE > 20% | Retrain model, alert analysts |
-| Query cost | > $100/day | Pause BigQuery, alert finance |
+| Query cost | > CHF 100/day | Pause BigQuery, alert finance |
 
 ## 6. Forecasting Pipeline
 

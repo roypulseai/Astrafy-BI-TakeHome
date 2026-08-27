@@ -13,9 +13,9 @@ The challenge document describes source data covering **2022–2023**, but the s
 
 ### Orphan sales record
 
-`order_id 5361303` exists in the sales table but has no matching order header. 1 orphaned sales line, $47.09 revenue, 1 product unit.
+`order_id 5361303` exists in the sales table but has no matching order header. 1 orphaned sales line, CHF 47.09 revenue, 1 product unit.
 
-**Impact**: Sales lines for this order are excluded from order-level marts. They contribute only to product-level aggregations if ever queried directly. This accounts for the $47.09 difference between raw sales total ($269,091.14) and mart_orders total ($269,044.05).
+**Impact**: Sales lines for this order are excluded from order-level marts. They contribute only to product-level aggregations if ever queried directly. This accounts for the CHF 47.09 difference between raw sales total (CHF 269,091.14) and mart_orders total (CHF 269,044.05).
 **Mitigation**: Caught by a `relationships` test (severity: warn) in `staging.yml`. Documented in `docs/DATA_QUALITY.md`.
 
 ### Same-day order sequencing

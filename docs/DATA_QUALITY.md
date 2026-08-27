@@ -7,8 +7,8 @@
 | Total orders | 3,661 | July 2025 – December 2026 |
 | Total sales lines | 28,361 | One row per order × product |
 | Total units sold | 47,729 | Sum of qty across all sales lines |
-| Raw revenue | $269,091.14 | Source-of-truth sum |
-| Mart revenue | $269,044.05 | After orphan exclusion ($47.09 excluded) |
+| Raw revenue | CHF 269,091.14 | Source-of-truth sum |
+| Mart revenue | CHF 269,044.05 | After orphan exclusion (CHF 47.09 excluded) |
 | Orphan sales lines | 1 | order_id 5361303 exists in sales but not orders |
 | Same-day orders | 63 customers, 129 affected rows | Multiple orders on the same date by the same customer |
 | Unique customers | 1,716 | Distinct customer_id values |
@@ -22,12 +22,12 @@
 **What**: One order_id exists in `stg_sales` with no matching record in `stg_orders`.
 
 **Quantified impact**:
-- Excluded from `mart_orders`: 1 row, $47.09 revenue, 1 product unit
-- Excluded from `mart_order_lines`: 1 row, $47.09 revenue, 1 product unit
+- Excluded from `mart_orders`: 1 row, CHF 47.09 revenue, 1 product unit
+- Excluded from `mart_order_lines`: 1 row, CHF 47.09 revenue, 1 product unit
 - Excluded from `exercise_4_orders_with_qty`: 1 row, 1 product unit
 - Excluded from `exercise_6_orders_segmented`: 1 row
 - All downstream marts: 1,716 unique customers (would be 1,717 if included)
-- Revenue difference: $269,091.14 (raw) - $269,044.05 (mart) = $47.09
+- Revenue difference: CHF 269,091.14 (raw) - CHF 269,044.05 (mart) = CHF 47.09
 - Units consistent across marts: `mart_orders` and `mart_order_lines` both report 47,728 units
 
 **Test**: Caught by a `relationships` test in `staging.yml` with `severity: warn`.
