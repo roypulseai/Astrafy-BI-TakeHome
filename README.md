@@ -103,6 +103,7 @@ TH_DBT_BQ_LookML/
 │   ├── production/
 │   └── challenge_regression/
 ├── lookml/
+│   ├── manifest.lkml              (environment constants — no source edits needed)
 │   ├── ecommerce.model.lkml
 │   └── views/
 ├── docs/
@@ -210,6 +211,24 @@ Looker Studio connects directly to BigQuery. Two dbt views power the dashboard:
 - **`ecommerce.model.lkml`** — Model with Order Performance + Product Performance Explores
 - **`views/orders.view.lkml`** — Order view with 12 measures (6 core + 6 segment-filtered), LookML-derived segmentation dimension
 - **`views/order_lines.view.lkml`** — Product/order-line view with product-level metrics
+- **`manifest.lkml`** — Environment constants (`GCP_PROJECT`, `BQ_DATASET`, `CONNECTION_NAME`); override per environment without editing views/models
+
+### Deployment — Configuration Only, No Source Edits
+
+No `.lkml` source file needs to be edited to deploy. All environment-specific values live in `lookml/manifest.lkml` as constants:
+
+| Constant | Default | What to configure |
+|---|---|---|
+| `GCP_PROJECT` | `thtask` | Target GCP project |
+| `BQ_DATASET` | `recruitment_analytics` | BigQuery dataset |
+| `CONNECTION_NAME` | `bigquery_connection` | Looker BigQuery connection name |
+
+**Steps:**
+1. Create the BigQuery connection in Looker (Admin → Connections) with the name you will use for `CONNECTION_NAME`.
+2. Override constants for the target environment — in Looker's UI (Project → Settings → Constants) or by importing an environment-specific manifest that `override`s the values.
+3. Deploy the project. Views resolve `sql_table_name: \`@{GCP_PROJECT}.@{BQ_DATASET}.mart_orders\`` and the model resolves `connection: "@{CONNECTION_NAME}"` from the configured constants.
+
+Defaults point at this take-home's `thtask.recruitment_analytics` so the project validates as-is.
 
 ### Key Design Decisions
 

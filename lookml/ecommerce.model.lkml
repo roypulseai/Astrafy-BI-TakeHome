@@ -1,4 +1,4 @@
-connection: "bigquery_connection"
+connection: "@{CONNECTION_NAME}"
 
 include: "/lookml/views/*.view.lkml"
 

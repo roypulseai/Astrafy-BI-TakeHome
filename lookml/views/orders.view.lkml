@@ -1,7 +1,5 @@
 view: orders {
-  # sql_table_name should be configured per environment.
-  # In production, replace with the appropriate project/dataset.
-  sql_table_name: `thtask.recruitment_analytics.mart_orders` ;;
+  sql_table_name: `@{GCP_PROJECT}.@{BQ_DATASET}.mart_orders` ;;
 
   dimension: order_id {
     primary_key: yes

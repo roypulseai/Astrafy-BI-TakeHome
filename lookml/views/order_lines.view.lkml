@@ -1,6 +1,5 @@
 view: order_lines {
-  # sql_table_name should be configured per environment.
-  sql_table_name: `thtask.recruitment_analytics.mart_order_lines` ;;
+  sql_table_name: `@{GCP_PROJECT}.@{BQ_DATASET}.mart_order_lines` ;;
 
   dimension: order_id {
     hidden: yes
