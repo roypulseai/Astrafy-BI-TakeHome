@@ -41,6 +41,9 @@ jobs:
       - name: dbt compile
         run: dbt compile
 
+      - name: Validate segmentation thresholds in sync (dbt vs LookML)
+        run: python scripts/validate_segmentation_thresholds.py
+
       - name: Python lint (ruff)
         run: ruff check ingestion/
 
