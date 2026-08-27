@@ -213,9 +213,9 @@ Looker Studio connects directly to BigQuery. Two dbt views power the dashboard:
 - **`views/order_lines.view.lkml`** — Product/order-line view with product-level metrics
 - **`manifest.lkml`** — Environment constants (`GCP_PROJECT`, `BQ_DATASET`, `CONNECTION_NAME`); override per environment without editing views/models
 
-### Deployment — Configuration Only, No Source Edits
+### Deployment — Directly Deployable, Configuration Only
 
-No `.lkml` source file needs to be edited to deploy. All environment-specific values live in `lookml/manifest.lkml` as constants:
+This is a **directly deployable** LookML project — not a template. The Looker project root is `lookml/` and `lookml/manifest.lkml` **is included in the repository** with all constants defined (with working defaults), so the project validates and runs in Looker as-is. No `.lkml` source file needs to be edited to deploy. All environment-specific values live in `lookml/manifest.lkml` as constants (using Looker's `@{...}` constant substitution; `@{GCP_PROJECT}`/`@{BQ_DATASET}` are defined in the manifest, not placeholder text):
 
 | Constant | Default | What to configure |
 |---|---|---|
@@ -233,7 +233,7 @@ No `.lkml` source file needs to be edited to deploy. All environment-specific va
 3. Deploy the project. Views resolve `sql_table_name: \`@{GCP_PROJECT}.@{BQ_DATASET}.mart_orders\`` and the model resolves `connection: "@{CONNECTION_NAME}"` from the configured constants.
 4. If you change segmentation thresholds (e.g., VIP = 5+), update **both** `dbt_project.yml` vars and `manifest.lkml` constants together — drift is caught by `assert_segmentation_reconciliation`.
 
-Defaults point at this take-home's `thtask.recruitment_analytics` so the project validates as-is.
+With defaults, the project is **structurally ready to be deployed and used within Looker** as the assignment requires — `lookml/` can be pushed as a Looker project and will validate/run without any file edits. Overrides are only needed when deploying to a different GCP project/dataset/connection.
 
 ### Key Design Decisions
 
