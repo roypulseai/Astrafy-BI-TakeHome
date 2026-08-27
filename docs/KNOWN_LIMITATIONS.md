@@ -20,7 +20,7 @@ The challenge document describes source data covering **2022–2023**, but the s
 
 ### Same-day order sequencing
 
-The source data contains dates but not timestamps. 63 customers (129 order rows, <4% of all orders) placed multiple orders on the same calendar date. Same-day orders cannot be deterministically sequenced.
+The source data contains dates but not timestamps. 63 customer/date groups (47 distinct customers; 129 order rows, <4% of all orders) placed multiple orders on the same calendar date. Same-day orders cannot be deterministically sequenced.
 
 **Impact**: A customer's same-day orders are excluded from each other's prior history, which can affect segmentation edge cases. For example, if a customer has two orders on the same day and neither sees the other, both may be classified as "New" when the second should be "Returning".
 

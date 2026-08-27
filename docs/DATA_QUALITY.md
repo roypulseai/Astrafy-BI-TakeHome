@@ -10,7 +10,7 @@
 | Raw revenue | CHF 269,091.14 | Source-of-truth sum |
 | Mart revenue | CHF 269,044.05 | After orphan exclusion (CHF 47.09 excluded) |
 | Orphan sales lines | 1 | order_id 5361303 exists in sales but not orders |
-| Same-day orders | 63 customers, 129 affected rows | Multiple orders on the same date by the same customer |
+| Same-day orders | 63 customer/date groups (47 distinct customers), 129 affected rows | Multiple orders on the same date by the same customer |
 | Unique customers | 1,716 | Distinct customer_id values |
 | Unique products | 9,196 | Distinct product_ids across all sales |
 | DBT tests | 63 data tests | 62 PASS, 1 WARN (orphan FK at staging), 0 ERROR |
@@ -36,7 +36,7 @@
 
 ### 2. Same-Day Order Ambiguity
 
-**What**: 63 customers placed multiple orders on the same calendar date. No timestamps are available.
+**What**: 63 customer/date groups (47 distinct customers) placed multiple orders on the same calendar date. No timestamps are available.
 
 **Quantified impact**:
 - 129 order rows are part of same-day pairs/groups
