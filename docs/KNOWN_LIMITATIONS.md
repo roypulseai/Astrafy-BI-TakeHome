@@ -58,7 +58,7 @@ The source files are static take-home inputs, not a live data feed.
 
 `v_sales_forecast_all()` is a TVF (not materialized). Every query re-runs `ML.FORECAST` three times plus re-aggregates `mart_orders`.
 
-**Impact**: Trivial at current scale (~188 daily rows). At high traffic, would incur repeated BigQuery compute costs.
+**Impact**: Trivial at current scale (~539 daily rows). At high traffic, would incur repeated BigQuery compute costs.
 **Mitigation**: Documented that at scale, this should be materialized into a scheduled table refreshed daily.
 
 ## Forecasting
@@ -72,7 +72,7 @@ The daily sales series includes only days with orders. Days with zero sales are 
 
 ### Limited training window
 
-The model is trained on ~188 days of daily data (July 2025 – December 2026).
+The model is trained on 541 daily points (539 non-zero) spanning ~18 months (July 2025 – December 2026). Only 2 days (2026-05-19 and 2026-05-20) have no orders.
 
 **Impact**: Limited ability to detect annual seasonality. The model relies on ARIMA auto-detection of patterns.
 **Mitigation**: Acceptable for a take-home exercise. In production, multiple years of data would be needed.

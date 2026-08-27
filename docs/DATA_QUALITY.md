@@ -52,11 +52,11 @@
 
 ### 4. Forecasting Data Gaps
 
-**What**: The training data contains only days with at least one order. Days with zero sales are absent.
+**What**: The raw data contains only days with at least one order. Days with zero sales are absent.
 
-**Quantified impact**: The daily series has ~188 data points over 540 calendar days, meaning ~352 days are missing (65% of the date range has no orders).
+**Quantified impact**: The daily series runs 2025-07-09 → 2026-12-31 (541 calendar days). 539 days have orders; only 2 days (2026-05-19 and 2026-05-20) have no orders. These 2 days are absent from the raw data rather than present as `0`.
 
-**Mitigation**: `date_spine` approach implemented in the forecast script to COALESCE missing days to zero.
+**Mitigation**: `date_spine` approach implemented in the forecast script to COALESCE the 2 missing days to zero.
 
 ### 5. Complete History Window
 

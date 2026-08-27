@@ -253,7 +253,7 @@ Looker Studio connects directly to BigQuery — `hidden: yes` in LookML only wor
 
 A BigQuery ML `ARIMA_PLUS` model (`sales_forecast`) trained on daily net sales from `mart_orders`. A date spine fills zero-sales days via `COALESCE`. Confidence bands floored at zero via `GREATEST(..., 0)`.
 
-**Training details**: ~188 non-zero days over ~540 calendar days (Jul 2025 – Dec 2026). `auto_arima = true` lets the model select the best ARIMA order.
+**Training details**: 539 non-zero-sales days over a 541-calendar-day range (Jul 2025 – Dec 2026); only 2 days (2026-05-19 and 2026-05-20) have no orders and are zero-filled by the date spine. `auto_arima = true` lets the model select the best ARIMA order.
 
 **TVFs created** (by `ingestion/create_forecast_model.py`):
 
