@@ -173,7 +173,7 @@ python ingestion/create_forecast_model.py  # must run after dbt build
 | 4. One-row-per-order 2025–2026              | `mart_orders` with `qty_product` column (3,661 rows)                                                                               |
 | 5. Segmentation (2026)                      | New 1,087; Returning 794; VIP 692                                                                                                  |
 | 6. One-row-per-order 2026 with segmentation | `exercise_6_orders_segmented` view (2,573 rows)                                                                                    |
-| Revenue reconciliation                      | Orders net_sales = Sales SUM(line_net_sales) within 0.01 (0 mismatches)                                                            |
+| Revenue reconciliation                      | Order-linked revenue reconciles within CHF 0.01; one orphan sales order (5361303) is excluded from order-level marts.            |
 
 ---
 
@@ -343,7 +343,7 @@ Generic tests (`not_null`, `unique`, `accepted_values`, `relationships`) plus 10
 | 2026 orders            | 2,573                                                                      |
 | Source sales rows      | 28,361                                                                     |
 | Distinct sales orders  | 3,662 (1 orphan: 5361303)                                                  |
-| Revenue reconciliation | Orders net_sales = Sales SUM(line_net_sales) within 0.01 (0 mismatches)   |
+| Revenue reconciliation | Order-linked revenue reconciles within CHF 0.01; one orphan sales order (5361303) is excluded from order-level marts. |
 | Order grain            | 1 row/order in `mart_orders`                                              |
 | Segmentation           | New / Returning / VIP (rolling 12-month, thresholds as dbt vars)          |
 | dbt tests              | 62 PASS, 2 WARN (orphan FK at staging: relationship + sales→order header), 0 ERROR |
