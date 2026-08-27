@@ -31,3 +31,6 @@ vars:
   returning_max_prior_orders: 3
   vip_min_prior_orders: 4
   segmentation_lookback_months: 12
+  # Dataset start date. Orders whose 12-month lookback begins on/after this
+  # date have complete history (i.e. order_date >= dataset_start + lookback).
+  dataset_start_date: '2025-07-09'

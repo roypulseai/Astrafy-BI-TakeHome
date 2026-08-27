@@ -97,6 +97,8 @@ TH_DBT_BQ_LookML/
 │   └── get_order_segment.sql
 ├── analyses/
 │   └── exercises_1_to_3.sql
+├── scripts/
+│   └── keydatainsights.py        (verifies Key Data Insights claims from BQ)
 ├── tests/
 │   ├── production/
 │   └── challenge_regression/
@@ -287,9 +289,9 @@ A BigQuery ML `ARIMA_PLUS` model (`sales_forecast`) trained on daily net sales f
 
 ## Data Quality & Testing
 
-**62 data tests — 61 PASS, 1 WARN (orphan `order_id` 5361303 at staging layer), 0 ERROR.**
+**63 data tests — 62 PASS, 1 WARN (orphan `order_id` 5361303 at staging layer), 0 ERROR.**
 
-Generic tests (`not_null`, `unique`, `accepted_values`, `relationships`) plus 8 singular SQL tests covering positive quantities, valid segments, order/sales reconciliation, dbt-vs-LookML segmentation reconciliation, and dynamic 2026 regression checks (no hardcoded numbers). Full breakdown → [`docs/architecture.md`](docs/architecture.md#testing-strategy) and [`docs/DATA_QUALITY.md`](docs/DATA_QUALITY.md).
+Generic tests (`not_null`, `unique`, `accepted_values`, `relationships`) plus 9 singular SQL tests covering positive quantities, valid segments, order/sales reconciliation, dbt-vs-LookML segmentation reconciliation, and dynamic 2026 regression checks (no hardcoded numbers). Full breakdown → [`docs/architecture.md`](docs/architecture.md#testing-strategy) and [`docs/DATA_QUALITY.md`](docs/DATA_QUALITY.md).
 
 ---
 
@@ -305,7 +307,7 @@ Generic tests (`not_null`, `unique`, `accepted_values`, `relationships`) plus 8 
 | Revenue reconciliation | Orders net_sales = Sales SUM(line_net_sales) within 0.01 (0 mismatches)   |
 | Order grain            | 1 row/order in `mart_orders`                                              |
 | Segmentation           | New / Returning / VIP (rolling 12-month, thresholds as dbt vars)          |
-| dbt tests              | 61 PASS, 1 WARN (orphan FK at staging), 0 ERROR                           |
+| dbt tests              | 62 PASS, 1 WARN (orphan FK at staging), 0 ERROR                           |
 | LookML                 | Model + 2 Views + 2 Explores implemented                                  |
 | Dashboard              | Looker Studio live + PDF export                                           |
 | Forecast               | BigQuery ML ARIMA_PLUS + date spine + multi-horizon TVF                   |

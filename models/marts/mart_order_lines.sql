@@ -53,8 +53,10 @@ select
     s.qty as quantity,
     s.line_net_sales as net_sales,
 
-    coalesce(oa.order_segmentation, 'Unknown') as order_segmentation,
-    coalesce(oa.customer_profile, 'Unknown') as customer_profile,
+    -- Orphan sales (no matching order) were excluded upstream, so the join
+    -- to mart_orders is guaranteed to match. No 'Unknown' fallback needed.
+    oa.order_segmentation,
+    oa.customer_profile,
     coalesce(oa.has_complete_12_month_history, false) as has_complete_12_month_history,
 
     round(safe_divide(s.line_net_sales, nullif(s.qty, 0)), 2) as revenue_per_unit

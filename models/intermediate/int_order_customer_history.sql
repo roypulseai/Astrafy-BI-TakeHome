@@ -34,11 +34,14 @@ customer_order_history as (
 
         count(history.order_id) as prior_orders_last_12_months,
 
-    -- The 12-month lookback window extends before the dataset start (2025-07-09)
-    -- for orders placed before 2026-07-09. Only orders on or after that date
-    -- have a complete 12-month history.
+    -- The 12-month lookback window extends before the dataset start
+    -- for orders placed within the first 12 months. Only orders placed
+    -- on/after dataset_start + lookback have a complete 12-month history.
     case
-        when current_order.order_date >= date '2026-07-09'
+        when current_order.order_date >= date_add(
+            date '{{ var('dataset_start_date') }}',
+            interval {{ var('segmentation_lookback_months') }} month
+        )
         then true
         else false
     end as has_complete_12_month_history

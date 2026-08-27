@@ -13,7 +13,7 @@
 | Same-day orders | 63 customers, 129 affected rows | Multiple orders on the same date by the same customer |
 | Unique customers | 1,716 | Distinct customer_id values |
 | Unique products | 9,196 | Distinct product_ids across all sales |
-| DBT tests | 62 data tests | 61 PASS, 1 WARN (orphan FK at staging), 0 ERROR |
+| DBT tests | 63 data tests | 62 PASS, 1 WARN (orphan FK at staging), 0 ERROR |
 
 ## Detailed Findings
 

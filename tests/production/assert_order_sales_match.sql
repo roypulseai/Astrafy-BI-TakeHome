@@ -24,7 +24,7 @@ select
 
 from order_sales o
 
-join line_sales l
+left join line_sales l
     using (order_id)
 
-where abs(o.net_sales - l.line_net_sales) > 0.01
+where abs(coalesce(o.net_sales, 0) - coalesce(l.line_net_sales, -1)) > 0.01
