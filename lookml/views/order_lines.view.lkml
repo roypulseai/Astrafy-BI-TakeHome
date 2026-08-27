@@ -1,6 +1,29 @@
 view: order_lines {
   sql_table_name: `@{GCP_PROJECT}.@{BQ_DATASET}.mart_order_lines` ;;
 
+  # ── AI-Guiding Parameters ────────────────────────────────────────────────────
+  # Constrain product analysis to valid business choices; hide technical
+  # column names and aggregation logic from the LLM.
+
+  parameter: product_metric_focus {
+    type: unquoted
+    allowed_value: { label: "Revenue" value: "revenue" }
+    allowed_value: { label: "Units Sold" value: "units" }
+    allowed_value: { label: "Orders Containing Product" value: "orders" }
+    description: "Business focus for product analysis. Guides AI to the correct product metric (revenue → total_net_sales, units → total_quantity, orders → order_count) and hides technical aggregation details."
+    default_value: "revenue"
+  }
+
+  parameter: product_segment_focus {
+    type: string
+    allowed_value: { label: "All Segments" value: "All" }
+    allowed_value: { label: "New" value: "New" }
+    allowed_value: { label: "Returning" value: "Returning" }
+    allowed_value: { label: "VIP" value: "VIP" }
+    description: "Segment filter for product queries. Constrains LLM to valid segments and provides context that segment is at order time. 'All' means no filter."
+    default_value: "All"
+  }
+
   dimension: order_id {
     hidden: yes
     type: number

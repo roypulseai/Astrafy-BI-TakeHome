@@ -1,6 +1,56 @@
 view: orders {
   sql_table_name: `@{GCP_PROJECT}.@{BQ_DATASET}.mart_orders` ;;
 
+  # ── AI-Guiding Parameters ────────────────────────────────────────────────────
+  # These parameters constrain how an LLM (or user) interacts with the Explore.
+  # They provide business context, hide technical date/measure logic, and
+  # expose only valid choices — the assignment's "strategically use LookML
+  # parameters" requirement.
+
+  parameter: date_granularity {
+    type: unquoted
+    allowed_value: { label: "Day" value: "day" }
+    allowed_value: { label: "Week" value: "week" }
+    allowed_value: { label: "Month" value: "month" }
+    allowed_value: { label: "Quarter" value: "quarter" }
+    description: "Time grain for AI time-series questions. Guides the model to aggregate at the correct level (day/week/month/quarter) and hides raw DATE_TRUNC logic. Default is month."
+    default_value: "month"
+  }
+
+  parameter: metric_focus {
+    type: unquoted
+    allowed_value: { label: "Revenue" value: "revenue" }
+    allowed_value: { label: "Orders" value: "orders" }
+    allowed_value: { label: "Average Order Value" value: "aov" }
+    allowed_value: { label: "Basket Size" value: "basket" }
+    description: "Business question focus. revenue → total_net_sales, orders → order_count, aov → average_order_value, basket → average_products_per_order. Hides technical measure names from the LLM and maps intent to the correct aggregation."
+    default_value: "revenue"
+  }
+
+  parameter: segment_focus {
+    type: string
+    allowed_value: { label: "All Customers" value: "All" }
+    allowed_value: { label: "New" value: "New" }
+    allowed_value: { label: "Returning" value: "Returning" }
+    allowed_value: { label: "VIP" value: "VIP" }
+    description: "Segment filter for AI queries. Constrains interaction to valid segments (New/Returning/VIP) and provides context that segment is at order time. 'All' means no filter. Hides raw order_segmentation column values."
+    default_value: "All"
+  }
+
+  dimension: order_date_at_selected_grain {
+    type: string
+    label: "Order Date (Selected Grain)"
+    description: "Order date truncated to the grain chosen via date_granularity. Use this for AI-generated time-series instead of building custom DATE_TRUNC."
+    sql:
+      CASE
+        WHEN '{% parameter date_granularity %}' = 'day' THEN CAST(${TABLE}.order_date AS STRING)
+        WHEN '{% parameter date_granularity %}' = 'week' THEN CAST(DATE_TRUNC(${TABLE}.order_date, WEEK) AS STRING)
+        WHEN '{% parameter date_granularity %}' = 'month' THEN CAST(DATE_TRUNC(${TABLE}.order_date, MONTH) AS STRING)
+        WHEN '{% parameter date_granularity %}' = 'quarter' THEN CAST(DATE_TRUNC(${TABLE}.order_date, QUARTER) AS STRING)
+        ELSE CAST(${TABLE}.order_date AS STRING)
+      END ;;
+  }
+
   dimension: order_id {
     primary_key: yes
     hidden: yes

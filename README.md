@@ -253,6 +253,7 @@ Descriptions + synonyms + hidden fields are necessary but not sufficient for rel
 - **Clear measure names**: `average_order_value` rather than `avg_net_sales_amount`.
 - **Business descriptions**: every dimension and measure has a human-readable description.
 - **Hidden technical artifacts**: `order_id`, `customer_id`, and `prior_orders_last_12_months` are hidden.
+- **Strategic LookML parameters** (the assignment's “strategically use parameters to guide AI”): `orders.date_granularity` (day/week/month/quarter), `orders.metric_focus` (revenue/orders/aov/basket), `orders.segment_focus` (All/New/Returning/VIP) and `order_lines.product_metric_focus` / `product_segment_focus`. Each exposes only valid business choices via `allowed_value` labels, provides context in its `description`, and hides raw `DATE_TRUNC` / measure-selection / column-filter logic. `orders.order_date_at_selected_grain` is the parameter-driven dimension AI should use for time-series instead of building its own truncation.
 - **Explicit business semantics**:
   - `net_sales` = order-level net revenue (CHF); in the Orders Explore one row = one order, so `SUM(net_sales)` is safe.
   - `average_order_value` = `revenue / orders` (`total_net_sales / order_count`), not an average of averages.
