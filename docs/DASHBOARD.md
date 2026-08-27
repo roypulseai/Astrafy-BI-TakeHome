@@ -121,22 +121,24 @@ volume driver  pricing/basket
 
 ## Revenue Contribution (all data: Jul 2025 – Dec 2026)
 
-**Monthly breakdown:**
+The source data spans 18 months. Monthly rows below aggregate across both years by calendar month (e.g., "Nov" = Nov 2025 + Nov 2026). Percentages are relative to the full 18-month total (CHF 269,044 / 3,661 orders).
 
-| Month | Revenue | % of Annual | Orders | % of Orders |
-| --- | --- | --- | --- | --- |
-| Jan | CHF16,520 | 6.1% | 232 | 6.3% |
-| Feb | CHF13,550 | 5.0% | 176 | 4.8% |
-| Mar | CHF13,877 | 5.2% | 203 | 5.5% |
-| Apr | CHF14,474 | 5.4% | 188 | 5.1% |
-| May | CHF13,376 | 5.0% | 172 | 4.7% |
-| Jun | CHF14,059 | 5.2% | 169 | 4.6% |
-| Jul | CHF25,107 | 9.3% | 326 | 8.9% |
-| Aug | CHF24,379 | 9.1% | 321 | 8.8% |
-| Sep | CHF28,490 | 10.6% | 383 | 10.5% |
-| Oct | CHF29,240 | 10.9% | 415 | 11.3% |
-| Nov | CHF42,603 | 15.8% | 605 | 16.5% |
-| Dec | CHF33,369 | 12.4% | 471 | 12.9% |
+**Monthly breakdown (cross-year calendar month sums):**
+
+| Month | Revenue | % of Total | Orders | % of Orders | Note |
+| --- | --- | --- | --- | --- | --- |
+| Jan | CHF 16,520 | 6.1% | 232 | 6.3% | 2026 only |
+| Feb | CHF 13,550 | 5.0% | 176 | 4.8% | 2026 only |
+| Mar | CHF 13,877 | 5.2% | 203 | 5.5% | 2026 only |
+| Apr | CHF 14,474 | 5.4% | 188 | 5.1% | 2026 only |
+| May | CHF 13,376 | 5.0% | 172 | 4.7% | 2026 only |
+| Jun | CHF 14,059 | 5.2% | 169 | 4.6% | 2026 only |
+| Jul | CHF 25,107 | 9.3% | 326 | 8.9% | 2025 + 2026 |
+| Aug | CHF 24,379 | 9.1% | 321 | 8.8% | 2025 + 2026 |
+| Sep | CHF 28,490 | 10.6% | 383 | 10.5% | 2025 + 2026 |
+| Oct | CHF 29,240 | 10.9% | 415 | 11.3% | 2025 + 2026 |
+| Nov | CHF 42,603 | 15.8% | 605 | 16.5% | 2025 + 2026 |
+| Dec | CHF 33,369 | 12.4% | 471 | 12.9% | 2025 + 2026 |
 
 **Quarterly summary:**
 
