@@ -175,6 +175,8 @@ python ingestion/create_forecast_model.py  # must run after dbt build
 | 6. One-row-per-order 2026 with segmentation | `exercise_6_orders_segmented` view (2,573 rows)                                                                                    |
 | Revenue reconciliation                      | Order-linked revenue reconciles within CHF 0.01; one orphan sales order (5361303) is excluded from order-level marts.            |
 
+Full worked answers with the underlying SQL for every exercise → [`Exercise_Answers.md`](Exercise_Answers.md).
+
 ---
 
 ## Key Design Decisions
