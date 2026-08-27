@@ -1,14 +1,14 @@
 -- Reconciliation test: verify that the dbt-computed order_segmentation
--- matches the LookML-derived rule (New = 0, Returning = 1-3, VIP = 4+).
+-- matches the LookML-derived rule using the same dbt vars as the macro.
 -- This should return 0 rows if both implementations agree.
 
 with lookml_segmentation as (
     select
         order_id,
         case
-            when prior_orders_last_12_months <= 0 then 'New'
-            when prior_orders_last_12_months between 1 and 3 then 'Returning'
-            when prior_orders_last_12_months >= 4 then 'VIP'
+            when prior_orders_last_12_months <= {{ var('new_customer_max_prior_orders') }} then 'New'
+            when prior_orders_last_12_months between {{ var('returning_min_prior_orders') }} and {{ var('returning_max_prior_orders') }} then 'Returning'
+            when prior_orders_last_12_months >= {{ var('vip_min_prior_orders') }} then 'VIP'
             else 'Unknown'
         end as lookml_segment
     from {{ ref('mart_orders') }}

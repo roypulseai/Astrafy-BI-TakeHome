@@ -45,7 +45,7 @@ view: orders {
 
   dimension: product_line_count {
     type: number
-    description: "Number of distinct product lines in the order."
+    description: "Total number of product lines (order rows) in the order. Not deduplicated — use distinct_product_count for unique SKUs."
     sql: ${TABLE}.product_line_count ;;
   }
 

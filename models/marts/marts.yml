@@ -47,7 +47,7 @@ models:
         description: "Total quantity of products purchased in the order (sum of qty across all product lines)."
 
       - name: product_line_count
-        description: "Number of distinct product lines in the order."
+        description: "Total number of product lines (order rows) in the order. Not deduplicated — use distinct_product_count for unique SKUs."
 
       - name: distinct_product_count
         description: "Number of distinct product SKUs in the order."
@@ -130,7 +130,7 @@ models:
         description: "Total product quantity purchased in the order."
 
       - name: product_line_count
-        description: "Number of distinct product lines in the order."
+        description: "Total number of product lines (order rows) in the order. Not deduplicated — use distinct_product_count for unique SKUs."
 
       - name: distinct_product_count
         description: "Number of distinct product SKUs in the order."

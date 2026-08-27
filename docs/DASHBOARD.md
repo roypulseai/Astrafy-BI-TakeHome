@@ -149,5 +149,5 @@ volume driver  pricing/basket
 
 **Headline takeaways** (see also Key Data Insights in the main README):
 
-- **Revenue concentration**: Q4 (Oct–Dec) accounts for 39.1% of annual revenue (CHF105,212 of CHF269,044), driven by November (605 orders, 15.8% of annual volume).
+- **Revenue concentration**: Q4 (Oct–Dec) accounts for 39.1% of annual revenue (CHF105,212 of CHF269,044), driven by November (605 orders, 16.5% of annual volume).
 - **VIP leverage**: 21.7% of orders from VIPs, but they drive 29.0% of annual revenue.

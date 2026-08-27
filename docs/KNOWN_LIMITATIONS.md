@@ -68,7 +68,7 @@ The source files are static take-home inputs, not a live data feed.
 The daily sales series includes only days with orders. Days with zero sales are absent rather than present as `0`.
 
 **Impact**: ARIMA_PLUS handles some irregularity, but a gap-free daily series is safer for daily-frequency models.
-**Mitigation**: Documented. For production forecasting, a gap-filled date spine with `COALESCE(..., 0)` would improve model accuracy.
+**Mitigation**: A date spine with `COALESCE(..., 0)` is implemented in `create_forecast_model.py`, filling zero-sales days before training. See `docs/DATA_QUALITY.md`.
 
 ### Limited training window
 
