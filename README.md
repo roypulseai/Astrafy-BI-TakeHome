@@ -279,9 +279,9 @@ A BigQuery ML `ARIMA_PLUS` model (`sales_forecast`) trained on daily net sales f
 ### Segmentation Analysis (2026)
 
 - **New customers dominate**: 42.2% of 2026 orders come from first-time buyers (1,087 orders).
-- **Healthy retention**: 57.8% of orders come from Returning (30.9%) + VIP (26.9%) customers.
-- **VIP concentration**: 26.9% of orders from VIPs (692 orders) suggests a loyal core.
-- **Growth opportunity**: converting 1,087 New customers into Returning is the highest-leverage retention play.
+- **Repeat customer share**: 57.8% of orders come from Returning (30.9%) + VIP (26.9%) customers. No benchmark available to judge whether this is high or low relative to industry norms.
+- **VIP share**: 26.9% of orders (692) come from customers who placed 4+ orders in the prior 12 months — by definition of the segmentation threshold, not a discovered loyalty signal.
+- **Conversion pool**: 1,087 first-time buyers represent the largest single segment of new-to-returning transition potential. Whether this is the most impactful retention lever depends on CAC, margin, and LTV data not available in this dataset.
 
 ---
 
