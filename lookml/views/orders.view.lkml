@@ -28,7 +28,7 @@ view: orders {
   dimension: net_sales {
     hidden: yes
     type: number
-    description: "Net sales amount for the order in local currency. Use the total_net_sales measure for reporting."
+    description: "Order-level net revenue (CHF) for this order. One row = one order in this Explore. Use the total_net_sales measure for reporting."
     sql: ${TABLE}.net_sales ;;
     value_format_name: decimal_2
     synonyms: [revenue, sales, amount, order total]
@@ -73,10 +73,11 @@ view: orders {
     type: string
     label: "Order Customer Segment"
     description: >
-      Customer segment at the time of each order, based on orders placed
-      during the preceding 12 months (excluding the current order):
-      New = 0 prior orders, Returning = 1-3, VIP = 4+.
-      This changes over time as the customer places more orders.
+      Segment at order time (point-in-time). Customer segment assigned to
+      this specific order based on orders placed during the preceding
+      12 months (excluding the current order): New = 0 prior orders,
+      Returning = 1-3, VIP = 4+. Do not conflate with customer_profile
+      (latest/current state).
     sql: ${TABLE}.order_segmentation ;;
     suggestions: ["New", "Returning", "VIP"]
     synonyms: [customer type, buyer segment, cohort]
@@ -118,9 +119,10 @@ view: orders {
     type: string
     label: "Current Customer Segment"
     description: >
-      Customer's current segment based on their latest order in the dataset.
-      Stable across all orders for a given customer. Useful for analysing
-      revenue by current customer type.
+      Latest/current customer state based on the customer's most recent order
+      in the dataset. Stable across all orders for a given customer
+      (unlike order_segmentation which is point-in-time per order).
+      Useful for analysing revenue by current customer type.
     sql: ${TABLE}.customer_profile ;;
     suggestions: ["New", "Returning", "VIP"]
   }
@@ -147,7 +149,7 @@ view: orders {
 
   measure: average_order_value {
     type: average
-    description: "Average net sales per order (revenue / orders)."
+    description: "Average order value = total revenue / orders (total_net_sales / order_count). Not an average of averages."
     sql: ${net_sales} ;;
     value_format_name: decimal_2
     drill_fields: [order_detail*]
@@ -171,7 +173,7 @@ view: orders {
 
   measure: unique_customers {
     type: count_distinct
-    description: "Number of distinct customers who placed orders."
+    description: "Number of distinct customers who placed orders. Non-additive — do not sum across segments or time buckets; always recompute distinct."
     sql: ${customer_id} ;;
   }
 

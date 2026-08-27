@@ -17,7 +17,9 @@ explore: orders {
     Order-grain Explore for monitoring sales, order volume, basket size,
     customer segmentation and customer behaviour. Grain: one row per order.
     Revenue measures are safe to aggregate without fan-out because the Explore
-    is at exactly one-row-per-order grain.
+    is at exactly one-row-per-order grain. Do not mix with order-line-level
+    measures in one query — use the Product Performance Explore for product
+    metrics; join on order_id only when both grains are explicitly required.
 
   # NOTE: has_complete_12_month_history is available as a filter dimension.
   # Orders before 2026-07-09 have an incomplete 12-month lookback and may
@@ -34,7 +36,9 @@ explore: order_lines {
     Product/order-line Explore for analysing sales by product, customer,
     and segment. Grain: one row per order × product. Use this Explore for
     product-level revenue, units, and customer analysis. Safe to aggregate
-    because each row is a single product line.
+    because each row is a single product line. Do not mix with order-level
+    measures — order metrics belong in the Order Performance Explore;
+    unique_customers is non-additive (do not sum across segments).
 
   join: orders {
     type: left_outer
